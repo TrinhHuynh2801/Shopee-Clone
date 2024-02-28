@@ -1,21 +1,19 @@
-var plusOne = function (digits) {
-  const lastIndex = digits.length - 1;
-
-  if (digits[lastIndex] != 9) {
-    digits[lastIndex]++;
-  } else {
-    digits[lastIndex] = 0;
-    for (let i = lastIndex - 1; i >= 0; i--) {
-      digits[i]++;
-      if (digits[i] == 10) {
-        digits[i] = 0;
-      } else {
-        break;
-      }
-    }
+function isBalanced(s) {
+  // Write your code here
+  if (s.length % 2 != 0) return "NO";
+  const bracelet = {
+    "{": "}",
+    "[": "]",
+    "(": ")",
+  };
+  const stack = [];
+  for (let i = 0; i < s.length; i++) {
+    if (bracelet[s[i]]) stack.push(s[i]);
+    else if (s[i] == bracelet[stack[stack.length - 1]]) stack.pop();
+    else return "NO";
   }
-  if (digits[0] == 0) digits.unshift(1);
-  return digits;
-};
+  if (stack.length) return "NO";
+  return "YES";
+}
 
-console.log(plusOne([9]));
+console.log(isBalanced("{{[[(())]]}}"));
