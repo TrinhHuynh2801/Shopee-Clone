@@ -1,19 +1,19 @@
-function isBalanced(s) {
-  // Write your code here
-  if (s.length % 2 != 0) return "NO";
-  const bracelet = {
-    "{": "}",
-    "[": "]",
-    "(": ")",
-  };
-  const stack = [];
-  for (let i = 0; i < s.length; i++) {
-    if (bracelet[s[i]]) stack.push(s[i]);
-    else if (s[i] == bracelet[stack[stack.length - 1]]) stack.pop();
-    else return "NO";
-  }
-  if (stack.length) return "NO";
-  return "YES";
-}
+var merge = function (nums1, m, nums2, n) {
+  let i = m - 1;
+  let j = n - 1;
+  let k = m + n - 1;
 
-console.log(isBalanced("{{[[(())]]}}"));
+  while (j >= 0) {
+    console.log(nums1);
+    console.log(i);
+    console.log(j);
+    if (i >= 0 && nums1[i] > nums2[j]) {
+      nums1[k--] = nums1[i--];
+    } else {
+      nums1[k--] = nums2[j--];
+    }
+  }
+  return nums1;
+};
+
+console.log(merge([1, 2, 3], 3, [2, 5, 6], 3));
