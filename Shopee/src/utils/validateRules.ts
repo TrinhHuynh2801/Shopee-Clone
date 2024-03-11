@@ -11,5 +11,8 @@ export const rules: Rules = {
     required: { value: true, message: 'Password là bắt buộc' },
     maxLength: { value: 160, message: 'Độ dài từ 6 - 160 kí tự' },
     minLength: { value: 6, message: 'Độ dài từ 6 - 160 kí tự' }
+  },
+  confirm_password: {
+    required: { value: true, message: 'Password là bắt buộc' }
   }
 }

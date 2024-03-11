@@ -15,7 +15,6 @@ export default function Login() {
   const onSubmit = handleSubmit((data) => {
     console.log(data)
   })
-  console.log(errors)
   return (
     <div className='bg-orange-500'>
       <div className='max-w-7xl mx-auto px-4'>
