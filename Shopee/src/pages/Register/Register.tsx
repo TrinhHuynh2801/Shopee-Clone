@@ -1,5 +1,7 @@
+import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import { registerAccount } from 'src/apis/auth.api'
 import { rules } from 'src/utils/validateRules'
 interface FormData {
   email: string
@@ -13,8 +15,17 @@ export default function Register() {
     getValues,
     formState: { errors }
   } = useForm<FormData>()
+  const registerMutation = useMutation({
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
+  })
   const onSubmit = handleSubmit((data) => {
-    console.log(data)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { confirm_password, ...body } = data
+    registerMutation.mutate(body, {
+      onSuccess: (data) => {
+        console.log(data)
+      }
+    })
   })
   return (
     <div className='bg-orange-500'>
