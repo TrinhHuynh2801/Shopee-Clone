@@ -1,5 +1,10 @@
+import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { loginAccount } from 'src/apis/auth.api'
+import { Response } from 'src/types/utils.type'
+import { isAxiosError422 } from 'src/utils/utils'
 import { rules } from 'src/utils/validateRules'
 
 interface FormData {
@@ -10,10 +15,35 @@ export default function Login() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors }
   } = useForm<FormData>()
+  const loginMutation = useMutation({
+    mutationFn: (body: FormData) => loginAccount(body)
+  })
   const onSubmit = handleSubmit((data) => {
-    console.log(data)
+    loginMutation.mutate(data, {
+      onSuccess: (data) => {
+        toast.success(data.data.message)
+      },
+      onError: (error) => {
+        if (isAxiosError422<Response<FormData>>(error)) {
+          const formError = error.response?.data.data
+          if (formError?.email) {
+            setError('email', {
+              message: formError.email,
+              type: 'Server'
+            })
+          }
+          if (formError?.password) {
+            setError('password', {
+              message: formError.password,
+              type: 'Server'
+            })
+          }
+        }
+      }
+    })
   })
   return (
     <div className='bg-orange-500'>

@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { registerAccount } from 'src/apis/auth.api'
 import { Response } from 'src/types/utils.type'
 import { isAxiosError422 } from 'src/utils/utils'
@@ -26,11 +27,10 @@ export default function Register() {
     const { confirm_password, ...body } = data
     registerMutation.mutate(body, {
       onSuccess: (data) => {
-        console.log(data)
+        toast.success(data.data.message)
       },
       onError: (error) => {
         if (isAxiosError422<Response<Omit<FormData, 'confirm_password'>>>(error)) {
-          console.log(error)
           const formError = error.response?.data.data
           if (formError?.email) {
             setError('email', {
@@ -39,7 +39,7 @@ export default function Register() {
             })
           }
           if (formError?.password) {
-            setError('email', {
+            setError('password', {
               message: formError.password,
               type: 'Server'
             })
