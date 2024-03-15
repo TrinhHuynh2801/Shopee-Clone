@@ -1,6 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+div#root {
+  padding: 0;
+}
 
 html {
   height: 100%;

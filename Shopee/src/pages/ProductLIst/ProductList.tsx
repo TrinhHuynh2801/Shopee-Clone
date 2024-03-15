@@ -1,3 +1,3 @@
 export default function ProductLIst() {
-  return <div>ProductList</div>
+  return <div className='mt-24'>ProductList</div>
 }
