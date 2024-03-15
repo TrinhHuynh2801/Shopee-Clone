@@ -74,6 +74,7 @@ export default function Header() {
             <div className='mx-2'>name</div>
           </Popover>
         </div>
+
         <nav className='flex flex-row items-center mx-5 pb-4'>
           <Link to='/' className='mr-5'>
             <svg viewBox='0 0 192 65' className='h-8 lg:h-12 fill-white'>
@@ -82,7 +83,7 @@ export default function Header() {
               </g>
             </svg>
           </Link>
-          <form className='basis-8/12'>
+          <form className='basis-7/12'>
             <div className='flex bg-white w-full h-10 rounded-sm'>
               <input type='text' className='text-black m-1 mx-5 text-xl outline-none w-full ' />
               <button className='  bg-shopee w-16 m-1 hover:opacity-90'>
@@ -103,22 +104,82 @@ export default function Header() {
               </button>
             </div>
           </form>
-          <Link to='/'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              fill='none'
-              viewBox='0 0 24 24'
-              strokeWidth='1.5'
-              stroke='currentColor'
-              className='w-7 h-7 ml-16'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
-              />
-            </svg>
-          </Link>
+          <Popover
+            className='ml-16'
+            renderPopover={
+              <div className='text-sm p-3 relative rounded-sm border border-gray-200 bg-white shadow-md w-[400px]'>
+                <div className='text-gray-400 capitalize'>Sản phẩm mới thêm</div>
+
+                <div className='flex mt-4 hover:bg-gray-200 p-1'>
+                  <div className='flex-shrink-0'>
+                    <img
+                      alt='product'
+                      src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lgetahyf8r930a_tn'
+                      className='h-8 w-8 object-cover'
+                    />
+                  </div>
+                  <div className='truncate ml-2'>Nắp chai thinner kiểu vặn - Dụng cụ mô hình - inb giao hỏa tốc</div>
+                  <div className='ml-2 text-shopeeText'>₫30.000</div>
+                </div>
+                <div className='flex mt-4 hover:bg-gray-200 p-1'>
+                  <div className='flex-shrink-0'>
+                    <img
+                      alt='product'
+                      src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lgetahyf8r930a_tn'
+                      className='h-8 w-8 object-cover'
+                    />
+                  </div>
+                  <div className='truncate ml-2'>Nắp chai thinner kiểu vặn - Dụng cụ mô hình - inb giao hỏa tốc</div>
+                  <div className='ml-2 text-shopeeText'>₫30.000</div>
+                </div>
+                <div className='flex mt-4 hover:bg-gray-200 p-1'>
+                  <div className='flex-shrink-0'>
+                    <img
+                      alt='product'
+                      src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lgetahyf8r930a_tn'
+                      className='h-8 w-8 object-cover'
+                    />
+                  </div>
+                  <div className='truncate ml-2'>Nắp chai thinner kiểu vặn - Dụng cụ mô hình - inb giao hỏa tốc</div>
+                  <div className='ml-2 text-shopeeText'>₫30.000</div>
+                </div>
+                <div className='flex mt-4 hover:bg-gray-200 p-1'>
+                  <div className='flex-shrink-0'>
+                    <img
+                      alt='product'
+                      src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lgetahyf8r930a_tn'
+                      className='h-8 w-8 object-cover'
+                    />
+                  </div>
+                  <div className='truncate ml-2'>Nắp chai thinner kiểu vặn - Dụng cụ mô hình - inb giao hỏa tốc</div>
+                  <div className='ml-2 text-shopeeText'>₫30.000</div>
+                </div>
+                <div className='flex mt-6 justify-between items-center'>
+                  <div className='text-gray-600 capitalize'>34 Thêm hàng vào giỏ</div>
+                  <button className='hover:opacity-90 text-white bg-shopeeText capitalize rounded-sm px-3 py-2'>
+                    Xem giỏ hàng
+                  </button>
+                </div>
+              </div>
+            }
+          >
+            <Link to='/'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth='1.5'
+                stroke='currentColor'
+                className='w-7 h-7'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
+                />
+              </svg>
+            </Link>
+          </Popover>
         </nav>
       </div>
     </div>

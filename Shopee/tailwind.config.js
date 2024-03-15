@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        shopee: '#fb5533'
+        shopee: '#fb5533',
+        shopeeText: '#ee4d2d'
       }
     }
   },
