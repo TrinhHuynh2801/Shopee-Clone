@@ -5,11 +5,15 @@ import Register from './pages/Register'
 import RegisterLayout from './layouts/RegisterLayout'
 import MainLayout from './layouts/MainLayout'
 import Profile from './pages/Profile'
-const isAuth = false
+import { useContext } from 'react'
+import { AppContext } from './contexts/app.context'
 const ProtectedRoute = () => {
+  const { isAuth } = useContext(AppContext)
   return isAuth ? <Outlet /> : <Navigate to='login' />
 }
 const RejectedRoute = () => {
+  const { isAuth } = useContext(AppContext)
+
   return !isAuth ? <Outlet /> : <Navigate to='' />
 }
 export default function useRouteElements() {

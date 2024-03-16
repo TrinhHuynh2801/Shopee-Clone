@@ -1,7 +1,21 @@
 import { Link } from 'react-router-dom'
 import Popover from '../Popover/index'
+import { useMutation } from '@tanstack/react-query'
+import { logout } from 'src/apis/auth.api'
+import { AppContext } from 'src/contexts/app.context'
+import { useContext } from 'react'
 
 export default function Header() {
+  const { setIsAuth } = useContext(AppContext)
+  const logoutMutation = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      setIsAuth(false)
+    }
+  })
+  const handleLogout = () => {
+    logoutMutation.mutate()
+  }
   return (
     <div className='py-4 max-w-7xl w-full text-white'>
       <div className=' bg-[linear-gradient(-180deg,#f53d2d,#f63)] w-[inherit]  max-w-[inherit] fixed text-xs'>
@@ -60,7 +74,10 @@ export default function Header() {
                 >
                   Đơn mua
                 </Link>
-                <button className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'>
+                <button
+                  onClick={handleLogout}
+                  className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
+                >
                   Đăng xuất
                 </button>
               </div>

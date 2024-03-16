@@ -1,8 +1,9 @@
 import { useMutation } from '@tanstack/react-query'
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import { Link, useNavigate } from 'react-router-dom'
 import { loginAccount } from 'src/apis/auth.api'
+import { AppContext } from 'src/contexts/app.context'
 import { ErrorResponse } from 'src/types/utils.type'
 import { isAxiosError422 } from 'src/utils/utils'
 import { rules } from 'src/utils/validateRules'
@@ -12,6 +13,8 @@ interface FormData {
   password: string
 }
 export default function Login() {
+  const { setIsAuth } = useContext(AppContext)
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -23,8 +26,9 @@ export default function Login() {
   })
   const onSubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
-      onSuccess: (data) => {
-        toast.success(data.data.message)
+      onSuccess: () => {
+        setIsAuth(true)
+        navigate('/')
       },
       onError: (error) => {
         if (isAxiosError422<ErrorResponse<FormData>>(error)) {
