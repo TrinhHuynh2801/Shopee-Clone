@@ -13,7 +13,7 @@ interface FormData {
   password: string
 }
 export default function Login() {
-  const { setIsAuth } = useContext(AppContext)
+  const { setIsAuth, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
   const {
     register,
@@ -26,7 +26,8 @@ export default function Login() {
   })
   const onSubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        setProfile(data.data.data.user)
         setIsAuth(true)
         navigate('/')
       },
@@ -50,11 +51,14 @@ export default function Login() {
     })
   })
   return (
-    <div className='bg-orange-500'>
+    <div className='bg-shopee'>
       <div className='max-w-7xl mx-auto px-4'>
         <div className='flex flex-row px-3 py-10 md:py-20 md:px-10'>
-          <div className='lg:basis-3/5'></div>
-          <div className='lg:basis-2/5 basis-full'>
+          {/* <div className='lg:basis-3/5 hidden lg:grid '>
+            <div className='place-self-center'></div>
+          </div> */}
+          {/* <div className='lg:basis-2/5 basis-full'> */}
+          <div className='basis-full'>
             <form className='bg-slate-50 rounded shadow-sm p-10' onSubmit={onSubmit} noValidate>
               <div className='text-xl'>Đăng nhập</div>
               <div className='mt-8'>
@@ -77,7 +81,11 @@ export default function Login() {
               </div>
 
               <div className='mt-4'>
-                <button type='submit' className='bg-orange-500 w-full text-white p-2 uppercase hover:bg-orange-600'>
+                <button
+                  disabled={loginMutation.isPending}
+                  type='submit'
+                  className='bg-shopeeText w-full text-white p-2 uppercase hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-70 '
+                >
                   Đăng nhập
                 </button>
               </div>

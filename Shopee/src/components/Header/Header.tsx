@@ -6,11 +6,12 @@ import { AppContext } from 'src/contexts/app.context'
 import { useContext } from 'react'
 
 export default function Header() {
-  const { setIsAuth, isAuth } = useContext(AppContext)
+  const { setIsAuth, isAuth, profile, setProfile } = useContext(AppContext)
   const logoutMutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
       setIsAuth(false)
+      setProfile(null)
     }
   })
   const handleLogout = () => {
@@ -89,7 +90,7 @@ export default function Header() {
                 alt=''
                 className='rounded-full object-contain w-6 h-6 '
               />
-              <div className='mx-2'>name</div>
+              <div className='mx-2'>{profile?.email}</div>
             </Popover>
           ) : (
             <div className='flex items-center  '>

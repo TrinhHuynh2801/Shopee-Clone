@@ -49,11 +49,14 @@ export default function Register() {
     })
   })
   return (
-    <div className='bg-orange-500'>
+    <div className='bg-shopee'>
       <div className='max-w-7xl mx-auto px-4'>
-        <div className='flex flex-row md:py-20 md:px-10'>
-          <div className='md:basis-3/5'></div>
-          <div className='md:basis-2/5 basis-full'>
+        <div className='flex flex-row px-3 py-10 md:py-20 md:px-10'>
+          {/* <div className='lg:basis-3/5 hidden lg:grid '>
+            <div className='place-self-center'></div>
+          </div> */}
+          {/* <div className='lg:basis-2/5 basis-full'> */}
+          <div className='basis-full'>
             <form className='bg-slate-50 rounded shadow-sm p-10' onSubmit={onSubmit} noValidate>
               <div className='text-xl'>Đăng ký</div>
               <div className='mt-8'>
@@ -87,7 +90,12 @@ export default function Register() {
                 <div className='text-red-600 mt-2 text-sm min-h-5'>{errors.confirm_password?.message}</div>
               </div>
               <div className='mt-6'>
-                <button className='bg-red-500 w-full text-white p-2 uppercase hover:bg-red-600'>Đăng ký</button>
+                <button
+                  disabled={registerMutation.isPending}
+                  className='bg-shopeeText w-full text-white p-2 uppercase hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-70 '
+                >
+                  Đăng ký
+                </button>
               </div>
               <div className='mt-4'>
                 <div className='flex'>
