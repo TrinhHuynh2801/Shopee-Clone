@@ -6,7 +6,7 @@ import { AppContext } from 'src/contexts/app.context'
 import { useContext } from 'react'
 
 export default function Header() {
-  const { setIsAuth } = useContext(AppContext)
+  const { setIsAuth, isAuth } = useContext(AppContext)
   const logoutMutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
@@ -58,38 +58,52 @@ export default function Header() {
             </svg>
           </Popover>
 
-          <Popover
-            className='mx-5 cursor-pointer flex items-center hover:text-gray-200'
-            renderPopover={
-              <div className='relative rounded-sm border border-gray-200 bg-white shadow-md'>
-                <Link
-                  to='profile'
-                  className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
-                >
-                  Tài khoản của tôi
+          {isAuth ? (
+            <Popover
+              className='mx-5 cursor-pointer flex items-center hover:text-gray-200'
+              renderPopover={
+                <div className='relative rounded-sm border border-gray-200 bg-white shadow-md'>
+                  <Link
+                    to='profile'
+                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
+                  >
+                    Tài khoản của tôi
+                  </Link>
+                  <Link
+                    to='/'
+                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
+                  >
+                    Đơn mua
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
+                  >
+                    Đăng xuất
+                  </button>
+                </div>
+              }
+            >
+              <img
+                src='https://down-vn.img.susercontent.com/file/61a786e44c4abfd340daebe703b18c36_tn'
+                alt=''
+                className='rounded-full object-contain w-6 h-6 '
+              />
+              <div className='mx-2'>name</div>
+            </Popover>
+          ) : (
+            <div className='flex items-center  '>
+              <div className='border-r-2 border-[hsla(0,0%,100%,.4)]'>
+                <Link to='register' className='cursor-pointer p-2 hover:text-gray-200'>
+                  Đăng ký
                 </Link>
-                <Link
-                  to='/'
-                  className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
-                >
-                  Đơn mua
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
-                >
-                  Đăng xuất
-                </button>
               </div>
-            }
-          >
-            <img
-              src='https://down-vn.img.susercontent.com/file/61a786e44c4abfd340daebe703b18c36_tn'
-              alt=''
-              className='rounded-full object-contain w-6 h-6 '
-            />
-            <div className='mx-2'>name</div>
-          </Popover>
+
+              <Link to='login' className='cursor-pointer p-2 hover:text-gray-200'>
+                Đăng nhập
+              </Link>
+            </div>
+          )}
         </div>
 
         <nav className='flex flex-row items-center mx-5 pb-4'>
