@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { registerAccount } from 'src/apis/auth.api'
-import { Response } from 'src/types/utils.type'
+import { ErrorResponse } from 'src/types/utils.type'
 import { isAxiosError422 } from 'src/utils/utils'
 import { rules } from 'src/utils/validateRules'
 interface FormData {
@@ -30,7 +30,7 @@ export default function Register() {
         toast.success(data.data.message)
       },
       onError: (error) => {
-        if (isAxiosError422<Response<Omit<FormData, 'confirm_password'>>>(error)) {
+        if (isAxiosError422<ErrorResponse<Omit<FormData, 'confirm_password'>>>(error)) {
           const formError = error.response?.data.data
           if (formError?.email) {
             setError('email', {
