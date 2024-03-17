@@ -58,7 +58,7 @@ export default function RatingStars() {
                 if (star < 5 - index) return starIconOn(star)
                 else return starIconOf(star)
               })}
-            {index != 0 ? <div className='mx-1'>trở lên</div> : <div className='mx-1 invisible'>trở lên</div>}
+            <div className={`mx-1 ${index == 0 && 'invisible'}`}>trở lên</div>
           </div>
         ))}
     </div>

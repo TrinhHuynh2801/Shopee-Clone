@@ -1,6 +1,7 @@
 import RatingStars from '../RatingStars'
 
 export default function ProductFilter() {
+  const checker = true
   return (
     <div className='basis-1/6 ml-3 mr-8'>
       <div className='mb-8'>
@@ -22,7 +23,7 @@ export default function ProductFilter() {
         </div>
         <div className='my-3'>
           <div className='flex items-center mt-3 '>
-            <svg viewBox='0 0 4 7' className='h-2 w-2 mr-2 invisible'>
+            <svg viewBox='0 0 4 7' className={`h-2 w-2 mr-2 ${checker ? '' : 'invisible'} fill-shopee`}>
               <polygon points='4 3.5 0 0 0 7' />
             </svg>
             <div className='text-sm cursor-pointer'>Đồ chơi</div>
