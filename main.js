@@ -1,19 +1,15 @@
-var merge = function (nums1, m, nums2, n) {
-  let i = m - 1;
-  let j = n - 1;
-  let k = m + n - 1;
-
-  while (j >= 0) {
-    console.log(nums1);
-    console.log(i);
-    console.log(j);
-    if (i >= 0 && nums1[i] > nums2[j]) {
-      nums1[k--] = nums1[i--];
-    } else {
-      nums1[k--] = nums2[j--];
-    }
+var findMaxLength = function (nums) {
+  let maxLength = 0;
+  let sum = 0;
+  const sumMap = new Map();
+  for (let i = 0; i < nums.length; i++) {
+    sum += nums[i] === 0 ? -1 : +1;
+    if (sum == 0) maxLength = i + 1;
+    else if (sumMap.has(sum)) {
+      maxLength = Math.max(maxLength, i - sumMap.get(sum));
+    } else sumMap.set(sum, i);
   }
-  return nums1;
+  return maxLength;
 };
 
-console.log(merge([1, 2, 3], 3, [2, 5, 6], 3));
+console.log(findMaxLength([0, 1]));
