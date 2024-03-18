@@ -7,17 +7,10 @@ export default function SortProduct() {
     desc: 'desc'
   } as const
 
-  const sortBy = {
-    createdAt: 'createdAt',
-    view: 'view',
-    sold: 'sold',
-    price: 'price'
-  } as const
-
   const page = 1,
     pageSize = 9
   return (
-    <div className='flex  bg-slate-200 items-center justify-between'>
+    <div className='flex flex-wrap bg-slate-200 items-center justify-between'>
       <div className='flex  gap-4 p-3 items-center'>
         <div className=''>Sắp xếp theo</div>
         <div className={`capitalize p-2 ${isActive ? 'bg-shopee text-white' : 'bg-white'} cursor-pointer`}>
@@ -30,7 +23,7 @@ export default function SortProduct() {
           bán chạy
         </div>
         <select
-          className={`capitalize p-2 ${isActive ? 'bg-shopee text-white' : 'bg-white'} cursor-pointer outline-none `}
+          className={`capitalize p-2  cursor-pointer outline-none flex-wrap`}
           // value={''}
         >
           <option selected value='' disabled className='bg-white text-black'>
@@ -44,7 +37,7 @@ export default function SortProduct() {
           </option>
         </select>
       </div>
-      <div className='flex items-center mr-5'>
+      <div className='flex items-center mx-5'>
         <div className='mr-3'>
           <span className='text-shopeeText '>{page}</span>
           <span>/{pageSize}</span>

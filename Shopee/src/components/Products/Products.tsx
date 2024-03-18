@@ -1,3 +1,18 @@
+import Product from './Product'
+
 export default function Products() {
-  return <div>Products</div>
+  return (
+    <div className='flex flex-wrap '>
+      <Product />
+      <Product />
+
+      <Product />
+
+      <Product />
+
+      <Product />
+
+      <Product />
+    </div>
+  )
 }

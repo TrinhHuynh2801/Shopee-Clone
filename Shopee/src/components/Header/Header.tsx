@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Popover from '../Popover/index'
 import { useMutation } from '@tanstack/react-query'
 import { logout } from 'src/apis/auth.api'
@@ -7,18 +7,20 @@ import { useContext } from 'react'
 
 export default function Header() {
   const { setIsAuth, isAuth, profile, setProfile } = useContext(AppContext)
+  const navigate = useNavigate()
   const logoutMutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
       setIsAuth(false)
       setProfile(null)
+      navigate('login')
     }
   })
   const handleLogout = () => {
     logoutMutation.mutate()
   }
   return (
-    <div className='py-4 max-w-7xl w-full text-white'>
+    <div className='py-4 max-w-7xl w-full text-white z-0'>
       <div className=' bg-[linear-gradient(-180deg,#f53d2d,#f63)] w-[inherit]  max-w-[inherit] fixed text-xs'>
         <div className='flex flex-row justify-end my-3 gap-1 items-center pr-20'>
           <Popover
