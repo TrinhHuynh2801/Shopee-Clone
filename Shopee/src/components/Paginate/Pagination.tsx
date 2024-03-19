@@ -44,7 +44,7 @@ export default function Pagination({ page, pageSize, setPage }: Props) {
         return (
           <button
             key={index}
-            className={`bg-white px-3 py-2 shadow-sm mx-2 cursor-pointer hover:text-shopeeText ${page === pageNumber && 'text-white hover:text-white bg-orange-500'}`}
+            className={`bg-white px-3 py-2 shadow-sm mx-2 cursor-pointer hover:text-shopeeText ${page === pageNumber && 'text-white hover:text-white bg-black'}`}
             onClick={() => setPage(pageNumber)}
           >
             {pageNumber}
