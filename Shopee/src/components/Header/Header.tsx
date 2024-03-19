@@ -20,15 +20,15 @@ export default function Header() {
     logoutMutation.mutate()
   }
   return (
-    <div className='py-4 max-w-7xl w-full text-white fixed z-50'>
-      <div className=' bg-[linear-gradient(-180deg,#f53d2d,#f63)] w-[inherit]  pt-3 max-w-[inherit]  text-xs'>
-        <div className='flex flex-row justify-end gap-1 items-center pr-20'>
+    <div className='py-4 max-w-7xl w-full text-white'>
+      <div className=' bg-[linear-gradient(-180deg,#f53d2d,#f63)] w-[inherit]  pt-3 max-w-[inherit]  text-xs '>
+        <div className='flex flex-row justify-end gap-1 items-center pr-20 '>
           <Popover
-            className='flex items-center hover:text-gray-200 cursor-pointer'
+            className='flex relative  items-center hover:text-gray-200 cursor-pointer '
             renderPopover={
-              <div className='relative rounded-sm border border-gray-200 bg-white shadow-md'>
-                <div className='flex flex-col py-2 pr-28 pl-3'>
-                  <button className='py-2 px-3 text-left hover:text-orange-500'>Tiếng Việt</button>
+              <div className='z-50 rounded-sm border border-gray-200 bg-white shadow-md '>
+                <div className='flex flex-col py-2 pr-28 pl-3 '>
+                  <button className='py-2 px-3 text-left hover:text-orange-500 '>Tiếng Việt</button>
                   <button className='mt-2 py-2 px-3 text-left hover:text-orange-500'>English</button>
                 </div>
               </div>
