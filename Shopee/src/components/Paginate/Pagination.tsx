@@ -33,7 +33,7 @@ export default function Pagination({ page, pageSize, setPage }: Props) {
       .fill(0)
       .map((_, index) => {
         const pageNumber = index + 1
-        if (page <= RANGE * 2 - 1 && pageNumber > page + RANGE && pageNumber < pageSize - RANGE + 1) {
+        if (page <= RANGE * 2 + 1 && pageNumber > page + RANGE && pageNumber < pageSize - RANGE + 1) {
           return renderDotAfter(index)
         } else if (page > RANGE * 2 + 1 && page < pageSize - RANGE * 2) {
           if (pageNumber < page - RANGE && pageNumber > RANGE) return renderDotBefore(index)
@@ -44,7 +44,7 @@ export default function Pagination({ page, pageSize, setPage }: Props) {
         return (
           <button
             key={index}
-            className={`bg-white px-3 py-2 shadow-sm mx-2 cursor-pointer hover:text-shopeeText ${page === pageNumber && 'text-red-600 hover:text-yellow-300 bg-black'}`}
+            className={`px-3 py-2 shadow-sm mx-2 cursor-pointer hover:text-shopeeText ${page === pageNumber ? 'text-white hover:text-white bg-orange-500' : 'bg-white'}`}
             onClick={() => setPage(pageNumber)}
           >
             {pageNumber}
