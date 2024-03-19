@@ -1,31 +1,32 @@
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
 import productApi from 'src/apis/product.api'
 import Pagination from 'src/components/Paginate'
 import ProductFilter from 'src/components/ProductFilter'
 import Products from 'src/components/Products'
 import SortProduct from 'src/components/SortProduct'
-import useQueryParams from 'src/hooks/useQueryParams'
+import useQueryConfig from 'src/hooks/useQueryConfig'
+import { ProductListConfig } from 'src/types/product.type'
 
 export default function ProductLIst() {
-  const queryParams = useQueryParams()
-  const [page, setPage] = useState(1)
+  const queryConfig = useQueryConfig()
+
   const { data } = useQuery({
-    queryKey: ['products', queryParams],
+    queryKey: ['products', queryConfig],
     queryFn: () => {
-      return productApi.getProducts(queryParams)
+      return productApi.getProducts(queryConfig as ProductListConfig)
     }
   })
 
-  console.log(data)
   return (
     <div className='flex bg-slate-50 border-b-4 pb-24 border-shopee '>
       <ProductFilter />
-      <div className='basis-5/6'>
-        <SortProduct />
-        {data && <Products products={data.data.data.products} />}
-        <Pagination page={page} setPage={setPage} pageSize={20} />
-      </div>
+      {data && (
+        <div className='basis-5/6'>
+          <SortProduct />
+          <Products products={data.data.data.products} />
+          <Pagination queryConfig={queryConfig} pageSize={data.data.data.pagination.page_size} />
+        </div>
+      )}
     </div>
   )
 }
