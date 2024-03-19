@@ -1,18 +1,14 @@
 import Product from './Product'
-
-export default function Products() {
+import { Product as ProductType } from 'src/types/product.type'
+interface Props {
+  products: ProductType[]
+}
+export default function Products({ products }: Props) {
   return (
-    <div className='flex flex-wrap '>
-      <Product />
-      <Product />
-
-      <Product />
-
-      <Product />
-
-      <Product />
-
-      <Product />
+    <div className='flex flex-wrap  '>
+      {products.map((product) => (
+        <Product key={product._id} product={product} />
+      ))}
     </div>
   )
 }
