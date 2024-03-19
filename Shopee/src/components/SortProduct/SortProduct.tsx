@@ -73,7 +73,7 @@ export default function SortProduct() {
               </svg>
             </Link>
           )}
-          {page === pageSize ? (
+          {/* {page === pageSize ? (
             <span className='flex h-9 w-10  cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/60  shadow hover:bg-slate-100'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -102,7 +102,7 @@ export default function SortProduct() {
                 <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 4.5l7.5 7.5-7.5 7.5' />
               </svg>
             </Link>
-          )}
+          )} */}
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import productApi from 'src/apis/product.api'
+import Pagination from 'src/components/Paginate'
 import ProductFilter from 'src/components/ProductFilter'
 import Products from 'src/components/Products'
 import SortProduct from 'src/components/SortProduct'
@@ -21,6 +22,7 @@ export default function ProductLIst() {
       <div className='basis-5/6'>
         <SortProduct />
         {data && <Products products={data.data.data.products} />}
+        <Pagination />
       </div>
     </div>
   )
