@@ -1,3 +1,4 @@
+import ProductRating from 'src/components/ProductRating'
 import { Product as ProductType } from 'src/types/product.type'
 
 interface Props {
@@ -46,6 +47,7 @@ export default function Product({ product }: Props) {
           </div>
         </div>
         <div className='mt-2 pb-4 flex items-center'>
+          <ProductRating rating={product.rating} />
           <div className='ml-2 text-sm'>
             <span className=''>Đã bán </span>
 

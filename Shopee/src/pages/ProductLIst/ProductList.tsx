@@ -16,7 +16,7 @@ export default function ProductLIst() {
 
   console.log(data)
   return (
-    <div className='pt-28 flex bg-slate-50 border-b-4 pb-24 border-shopee '>
+    <div className='pt-36 flex bg-slate-50 border-b-4 pb-24 border-shopee '>
       <ProductFilter />
       <div className='basis-5/6'>
         <SortProduct />
