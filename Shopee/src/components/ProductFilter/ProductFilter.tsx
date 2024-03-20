@@ -4,6 +4,7 @@ import { QueryConfig } from 'src/hooks/useQueryConfig'
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import { Controller, useForm } from 'react-hook-form'
 import InputNumber from '../InputNumber'
+import { omit } from 'lodash'
 
 interface Props {
   categories: Category[]
@@ -17,6 +18,7 @@ export default function ProductFilter({ categories, queryConfig }: Props) {
   const {
     control,
     handleSubmit,
+    trigger,
     getValues,
     formState: { errors }
   } = useForm<FormData>({
@@ -25,7 +27,6 @@ export default function ProductFilter({ categories, queryConfig }: Props) {
       price_min: ''
     }
   })
-  console.log(errors)
   const errorMessage = (price_min: string, price_max: string) => {
     if (price_min !== '' && price_max !== '') {
       return Number(price_max) >= Number(price_min)
@@ -33,6 +34,7 @@ export default function ProductFilter({ categories, queryConfig }: Props) {
     return price_min !== '' || price_max !== ''
   }
   const navigate = useNavigate()
+
   const onSubmit = handleSubmit((data) => {
     navigate({
       pathname: '/',
@@ -43,6 +45,13 @@ export default function ProductFilter({ categories, queryConfig }: Props) {
       }).toString()
     })
   })
+
+  const handleDelete = () => {
+    navigate({
+      pathname: '',
+      search: createSearchParams(omit(queryConfig, ['price_max', 'price_min', 'category', 'rating_filter'])).toString()
+    })
+  }
 
   return (
     <div className='basis-1/6 ml-3 mr-8'>
@@ -130,6 +139,7 @@ export default function ProductFilter({ categories, queryConfig }: Props) {
                   {...field}
                   onChange={(event) => {
                     field.onChange(event)
+                    trigger('price_max')
                   }}
                 />
               )
@@ -154,6 +164,7 @@ export default function ProductFilter({ categories, queryConfig }: Props) {
                   {...field}
                   onChange={(event) => {
                     field.onChange(event)
+                    trigger('price_min')
                   }}
                 />
               )
@@ -171,9 +182,9 @@ export default function ProductFilter({ categories, queryConfig }: Props) {
           Áp dụng
         </button>
       </form>
-      <RatingStars />
+      <RatingStars queryConfig={queryConfig} />
       <button
-        type='submit'
+        onClick={handleDelete}
         className=' bg-shopeeText mt-5 w-full text-white p-1 uppercase hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-70 '
       >
         Xóa tất cả

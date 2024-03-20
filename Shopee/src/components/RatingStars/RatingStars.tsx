@@ -1,4 +1,11 @@
-export default function RatingStars() {
+import { createSearchParams, useNavigate } from 'react-router-dom'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
+
+interface Props {
+  queryConfig: QueryConfig
+}
+
+export default function RatingStars({ queryConfig }: Props) {
   const starIconOn = (indexStar: number) => (
     <svg viewBox='0 0 9.5 8' className='mr-1 h-4 w-4' key={indexStar}>
       <defs>
@@ -44,14 +51,28 @@ export default function RatingStars() {
       />
     </svg>
   )
-
+  const navigate = useNavigate()
+  const handleStars = (stars: number) => {
+    navigate({
+      pathname: '',
+      search: createSearchParams({
+        ...queryConfig,
+        rating_filter: stars.toString()
+      }).toString()
+    })
+  }
   return (
     <div className=' pb-6 border-b-2 border-b-slate-200'>
       <p className='mb-5'>Đánh giá</p>
       {Array(5)
         .fill(0)
         .map((_, index) => (
-          <div className='mt-3 ml-2 cursor-pointer flex shrink' key={index}>
+          <div
+            className='mt-3 ml-2 cursor-pointer flex shrink'
+            onClick={() => handleStars(5 - index)}
+            key={index}
+            aria-hidden='true'
+          >
             {Array(5)
               .fill(0)
               .map((_, star) => {
