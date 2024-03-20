@@ -1,13 +1,48 @@
 import { Category } from 'src/types/category.type'
 import RatingStars from '../RatingStars'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
-import { Link, createSearchParams } from 'react-router-dom'
+import { Link, createSearchParams, useNavigate } from 'react-router-dom'
+import { Controller, useForm } from 'react-hook-form'
+import InputNumber from '../InputNumber'
 
 interface Props {
   categories: Category[]
   queryConfig: QueryConfig
 }
+type FormData = {
+  price_min: string
+  price_max: string
+}
 export default function ProductFilter({ categories, queryConfig }: Props) {
+  const {
+    control,
+    handleSubmit,
+    getValues,
+    formState: { errors }
+  } = useForm<FormData>({
+    defaultValues: {
+      price_max: '',
+      price_min: ''
+    }
+  })
+  console.log(errors)
+  const errorMessage = (price_min: string, price_max: string) => {
+    if (price_min !== '' && price_max !== '') {
+      return Number(price_max) >= Number(price_min)
+    }
+    return price_min !== '' || price_max !== ''
+  }
+  const navigate = useNavigate()
+  const onSubmit = handleSubmit((data) => {
+    navigate({
+      pathname: '/',
+      search: createSearchParams({
+        ...queryConfig,
+        price_max: data.price_max,
+        price_min: data.price_min
+      }).toString()
+    })
+  })
 
   return (
     <div className='basis-1/6 ml-3 mr-8'>
@@ -26,7 +61,10 @@ export default function ProductFilter({ categories, queryConfig }: Props) {
               </g>
             </g>
           </svg>
-          <span className='text-base font-semibold capitalize'>Tất cả danh mục</span>
+          <Link to='/'>
+            {' '}
+            <span className='text-base font-semibold capitalize'>Tất cả danh mục</span>
+          </Link>
         </div>
         {categories.map((category) => (
           <Link
@@ -47,7 +85,9 @@ export default function ProductFilter({ categories, queryConfig }: Props) {
               >
                 <polygon points='4 3.5 0 0 0 7' />
               </svg>
-              <div className={`text-sm cursor-pointer ${queryConfig.category === category._id && 'text-shopeeText'}`}>{category.name}</div>
+              <div className={`text-sm cursor-pointer ${queryConfig.category === category._id && 'text-shopeeText'}`}>
+                {category.name}
+              </div>
             </div>
           </Link>
         ))}
@@ -70,21 +110,60 @@ export default function ProductFilter({ categories, queryConfig }: Props) {
         </div>
       </div>
 
-      <form className='mb-8  pb-6 border-b-2 border-b-slate-200'>
+      <form className='mb-8  pb-6 border-b-2 border-b-slate-200' onSubmit={onSubmit}>
         <p className='mb-5'>Khoảng giá</p>
         <div className='flex items-center justify-between'>
-          <input
-            type='text'
-            placeholder='₫ TỪ'
-            className='rounded-sm shadow-sm outline-none w-0 flex-grow shrink-0 border p-2 text-xs'
+          <Controller
+            control={control}
+            name='price_min'
+            rules={{
+              validate: (value) => errorMessage(getValues('price_min'), value) || 'Giá không phù hợp'
+            }}
+            render={({ field }) => {
+              return (
+                <InputNumber
+                  type='text'
+                  className='grow'
+                  placeholder='₫ TỪ'
+                  classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
+                  classNameError='hidden'
+                  {...field}
+                  onChange={(event) => {
+                    field.onChange(event)
+                  }}
+                />
+              )
+            }}
           />
+
           <div className='bg-slate-400  mx-5 w-2 h-[1px]'></div>
-          <input
-            type='text'
-            placeholder='₫ ĐẾN'
-            className='rounded-sm shadow-sm outline-none  w-0 flex-grow shrink-0 border p-2 text-xs'
+          <Controller
+            control={control}
+            name='price_max'
+            rules={{
+              validate: (value) => errorMessage(getValues('price_min'), value) || 'Giá không phù hợp'
+            }}
+            render={({ field }) => {
+              return (
+                <InputNumber
+                  type='text'
+                  className='grow'
+                  placeholder='₫ ĐẾN'
+                  classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
+                  classNameError='hidden'
+                  {...field}
+                  onChange={(event) => {
+                    field.onChange(event)
+                  }}
+                />
+              )
+            }}
           />
         </div>
+        <div className='mt-1 min-h-[1.25rem] text-center text-sm text-red-600'>
+          {errors.price_min?.message || errors.price_max?.message}
+        </div>
+
         <button
           type='submit'
           className=' bg-shopeeText mt-5 w-full text-white p-1 uppercase hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-70 '
