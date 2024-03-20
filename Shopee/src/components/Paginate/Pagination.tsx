@@ -59,7 +59,7 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
       })
   }
   return (
-    <div className='mt-6 flex flex-wrap justify-center'>
+    <div className='mt-6 flex md:justify-center justify-start'>
       {page === 1 ? (
         <span className='mx-2 cursor-not-allowed rounded border opacity-50 bg-white/60 px-3 py-2  shadow-sm'>Prev</span>
       ) : (
