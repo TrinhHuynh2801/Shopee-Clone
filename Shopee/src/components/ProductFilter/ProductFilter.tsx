@@ -1,7 +1,14 @@
+import { Category } from 'src/types/category.type'
 import RatingStars from '../RatingStars'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
+import { Link, createSearchParams } from 'react-router-dom'
 
-export default function ProductFilter() {
-  const checker = true
+interface Props {
+  categories: Category[]
+  queryConfig: QueryConfig
+}
+export default function ProductFilter({ categories, queryConfig }: Props) {
+
   return (
     <div className='basis-1/6 ml-3 mr-8'>
       <div className='mb-8'>
@@ -21,14 +28,29 @@ export default function ProductFilter() {
           </svg>
           <span className='text-base font-semibold capitalize'>Tất cả danh mục</span>
         </div>
-        <div className='my-3'>
-          <div className='flex items-center mt-3 '>
-            <svg viewBox='0 0 4 7' className={`h-2 w-2 mr-2 ${checker ? '' : 'invisible'} fill-shopee`}>
-              <polygon points='4 3.5 0 0 0 7' />
-            </svg>
-            <div className='text-sm cursor-pointer'>Đồ chơi</div>
-          </div>
-        </div>
+        {categories.map((category) => (
+          <Link
+            to={{
+              pathname: '',
+              search: createSearchParams({
+                ...queryConfig,
+                category: category._id
+              }).toString()
+            }}
+            className='my-3'
+            key={category._id}
+          >
+            <div className='flex items-center mt-3 '>
+              <svg
+                viewBox='0 0 4 7'
+                className={`h-2 w-2 mr-2 ${queryConfig.category === category._id ? '' : 'invisible'} fill-shopee`}
+              >
+                <polygon points='4 3.5 0 0 0 7' />
+              </svg>
+              <div className={`text-sm cursor-pointer ${queryConfig.category === category._id && 'text-shopeeText'}`}>{category.name}</div>
+            </div>
+          </Link>
+        ))}
       </div>
 
       <div className='mb-8 pb-6 border-b-2 border-b-slate-200'>

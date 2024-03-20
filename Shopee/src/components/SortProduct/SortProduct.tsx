@@ -63,7 +63,7 @@ export default function SortProduct({ queryConfig, pageSize }: Props) {
           className={`capitalize p-2 cursor-pointer outline-none flex-wrap ${sort_by === sortBy.price && 'text-shopeeText'}`}
           value={order || ''}
         >
-          <option selected value='' disabled className='bg-white text-black'>
+          <option disabled className='bg-white text-black'>
             Giá
           </option>
           <option value={orderConstant.asc} className='bg-white text-black '>
