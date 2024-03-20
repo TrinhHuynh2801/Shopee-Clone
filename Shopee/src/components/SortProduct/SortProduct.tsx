@@ -2,6 +2,7 @@ import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
 import { order as orderConstant, sortBy } from 'src/constants/sortBy'
 import { ProductListConfig } from 'src/types/product.type'
+import { omit } from 'lodash'
 interface Props {
   queryConfig: QueryConfig
   pageSize: number
@@ -13,10 +14,15 @@ export default function SortProduct({ queryConfig, pageSize }: Props) {
   const handleSort = (sortByValue: Exclude<ProductListConfig['sort_by'], undefined>) => {
     navigate({
       pathname: '',
-      search: createSearchParams({
-        ...queryConfig,
-        sort_by: sortByValue
-      }).toString()
+      search: createSearchParams(
+        omit(
+          {
+            ...queryConfig,
+            sort_by: sortByValue
+          },
+          ['order']
+        )
+      ).toString()
     })
   }
 
@@ -75,7 +81,7 @@ export default function SortProduct({ queryConfig, pageSize }: Props) {
         </div>
         <div className='ml-2 flex gap-1'>
           {page === 1 ? (
-            <span className='flex h-9 w-10 cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/60  shadow hover:bg-slate-100'>
+            <span className='flex h-9 w-10 cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/60  shadow opacity-60'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
@@ -111,7 +117,7 @@ export default function SortProduct({ queryConfig, pageSize }: Props) {
             </Link>
           )}
           {page === pageSize ? (
-            <span className='flex h-9 w-10  cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/60  shadow hover:bg-slate-100'>
+            <span className='flex h-9 w-10  cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/60  shadow opacity-60'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
