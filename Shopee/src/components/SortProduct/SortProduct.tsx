@@ -1,31 +1,48 @@
-import { Link } from 'react-router-dom'
+import { Link, createSearchParams, useNavigate } from 'react-router-dom'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
+import { order as orderConstant, sortBy } from 'src/constants/sortBy'
+import { ProductListConfig } from 'src/types/product.type'
+interface Props {
+  queryConfig: QueryConfig
+  pageSize: number
+}
+export default function SortProduct({ queryConfig, pageSize }: Props) {
+  const { sort_by = sortBy.createdAt, order } = queryConfig
+  const page = Number(queryConfig.page)
+  const navigate = useNavigate()
+  const handleSort = (sortByValue: Exclude<ProductListConfig['sort_by'], undefined>) => {
+    navigate({
+      pathname: '',
+      search: createSearchParams({
+        ...queryConfig,
+        sort_by: sortByValue
+      }).toString()
+    })
+  }
 
-export default function SortProduct() {
-  const isActive = false
-  const orderConstant = {
-    asc: 'asc',
-    desc: 'desc'
-  } as const
-
-  const page = 1,
-    pageSize = 9
   return (
     <div className='flex flex-wrap bg-slate-200 items-center justify-between'>
       <div className='flex  gap-4 p-3 items-center'>
         <div className=''>Sắp xếp theo</div>
-        <div className={`capitalize p-2 ${isActive ? 'bg-shopee text-white' : 'bg-white'} cursor-pointer`}>
-          Phổ biến
-        </div>
-        <div className={`capitalize p-2 ${isActive ? 'bg-shopee text-white' : 'bg-white'} cursor-pointer`}>
-          mới nhất
-        </div>
-        <div className={`capitalize p-2 ${isActive ? 'bg-shopee text-white' : 'bg-white'} cursor-pointer`}>
-          bán chạy
-        </div>
-        <select
-          className={`capitalize p-2  cursor-pointer outline-none flex-wrap`}
-          // value={''}
+        <button
+          onClick={() => handleSort(sortBy.view)}
+          className={`capitalize p-2 ${sort_by === sortBy.view ? 'bg-shopee text-white' : 'bg-white'} cursor-pointer`}
         >
+          Phổ biến
+        </button>
+        <button
+          onClick={() => handleSort(sortBy.createdAt)}
+          className={`capitalize p-2 ${sort_by === sortBy.createdAt ? 'bg-shopee text-white' : 'bg-white'} cursor-pointer`}
+        >
+          mới nhất
+        </button>
+        <button
+          onClick={() => handleSort(sortBy.sold)}
+          className={`capitalize p-2 ${sort_by === sortBy.sold ? 'bg-shopee text-white' : 'bg-white'} cursor-pointer`}
+        >
+          bán chạy
+        </button>
+        <select className={`capitalize p-2  cursor-pointer outline-none flex-wrap`} value={order || ''}>
           <option selected value='' disabled className='bg-white text-black'>
             Giá
           </option>
@@ -58,7 +75,13 @@ export default function SortProduct() {
             </span>
           ) : (
             <Link
-              to=''
+              to={{
+                pathname: '',
+                search: createSearchParams({
+                  ...queryConfig,
+                  page: (page - 1).toString()
+                }).toString()
+              }}
               className='flex h-9 w-10   items-center justify-center rounded-tl-sm rounded-bl-sm bg-white  shadow hover:bg-slate-100'
             >
               <svg
@@ -73,7 +96,7 @@ export default function SortProduct() {
               </svg>
             </Link>
           )}
-          {/* {page === pageSize ? (
+          {page === pageSize ? (
             <span className='flex h-9 w-10  cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/60  shadow hover:bg-slate-100'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -88,7 +111,13 @@ export default function SortProduct() {
             </span>
           ) : (
             <Link
-              to=''
+              to={{
+                pathname: '',
+                search: createSearchParams({
+                  ...queryConfig,
+                  page: (page + 1).toString()
+                }).toString()
+              }}
               className='flex h-9 w-10   items-center justify-center rounded-tl-sm rounded-bl-sm bg-white  shadow hover:bg-slate-100'
             >
               <svg
@@ -102,7 +131,7 @@ export default function SortProduct() {
                 <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 4.5l7.5 7.5-7.5 7.5' />
               </svg>
             </Link>
-          )} */}
+          )}
         </div>
       </div>
     </div>

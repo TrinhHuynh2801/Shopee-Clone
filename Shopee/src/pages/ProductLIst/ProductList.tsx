@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, keepPreviousData } from '@tanstack/react-query'
 import productApi from 'src/apis/product.api'
 import Pagination from 'src/components/Paginate'
 import ProductFilter from 'src/components/ProductFilter'
@@ -7,14 +7,15 @@ import SortProduct from 'src/components/SortProduct'
 import useQueryConfig from 'src/hooks/useQueryConfig'
 import { ProductListConfig } from 'src/types/product.type'
 
-export default function ProductLIst() {
+export default function ProductList() {
   const queryConfig = useQueryConfig()
 
   const { data } = useQuery({
     queryKey: ['products', queryConfig],
     queryFn: () => {
       return productApi.getProducts(queryConfig as ProductListConfig)
-    }
+    },
+    placeholderData: keepPreviousData
   })
 
   return (
@@ -22,7 +23,7 @@ export default function ProductLIst() {
       <ProductFilter />
       {data && (
         <div className='basis-5/6'>
-          <SortProduct />
+          <SortProduct queryConfig={queryConfig} pageSize={data.data.data.pagination.page_size} />
           <Products products={data.data.data.products} />
           <Pagination queryConfig={queryConfig} pageSize={data.data.data.pagination.page_size} />
         </div>
