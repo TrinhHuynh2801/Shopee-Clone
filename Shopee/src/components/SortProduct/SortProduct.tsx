@@ -20,6 +20,16 @@ export default function SortProduct({ queryConfig, pageSize }: Props) {
     })
   }
 
+  const handlePriceSort = (orderPrice: Exclude<ProductListConfig['order'], undefined>) => {
+    navigate({
+      pathname: '',
+      search: createSearchParams({
+        ...queryConfig,
+        sort_by: sortBy.price,
+        order: orderPrice
+      }).toString()
+    })
+  }
   return (
     <div className='flex flex-wrap bg-slate-200 items-center justify-between'>
       <div className='flex  gap-4 p-3 items-center'>
@@ -42,7 +52,11 @@ export default function SortProduct({ queryConfig, pageSize }: Props) {
         >
           bán chạy
         </button>
-        <select className={`capitalize p-2  cursor-pointer outline-none flex-wrap`} value={order || ''}>
+        <select
+          onChange={(event) => handlePriceSort(event.target.value as Exclude<ProductListConfig['order'], undefined>)}
+          className={`capitalize p-2  cursor-pointer outline-none flex-wrap`}
+          value={order || ''}
+        >
           <option selected value='' disabled className='bg-white text-black'>
             Giá
           </option>
