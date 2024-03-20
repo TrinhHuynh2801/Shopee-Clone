@@ -60,7 +60,7 @@ export default function SortProduct({ queryConfig, pageSize }: Props) {
         </button>
         <select
           onChange={(event) => handlePriceSort(event.target.value as Exclude<ProductListConfig['order'], undefined>)}
-          className={`capitalize p-2  cursor-pointer outline-none flex-wrap`}
+          className={`capitalize p-2 cursor-pointer outline-none flex-wrap ${sort_by === sortBy.price && 'text-shopeeText'}`}
           value={order || ''}
         >
           <option selected value='' disabled className='bg-white text-black'>
