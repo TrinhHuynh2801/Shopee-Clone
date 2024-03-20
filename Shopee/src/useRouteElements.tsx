@@ -7,6 +7,7 @@ import Profile from './pages/Profile'
 import { useContext } from 'react'
 import { AppContext } from './contexts/app.context'
 import ProductList from './pages/ProductList'
+
 const ProtectedRoute = () => {
   const { isAuth } = useContext(AppContext)
   return isAuth ? <Outlet /> : <Navigate to='login' />
