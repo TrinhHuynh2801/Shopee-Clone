@@ -38,7 +38,7 @@ export default function SortProduct({ queryConfig, pageSize }: Props) {
   }
   return (
     <div className='flex flex-wrap bg-slate-200 items-center justify-between'>
-      <div className='flex  gap-4 p-3 items-center'>
+      <div className='flex flex-wrap gap-4 p-3 items-center'>
         <div className=''>Sắp xếp theo</div>
         <button
           onClick={() => handleSort(sortBy.view)}

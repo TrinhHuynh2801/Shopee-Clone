@@ -22,7 +22,7 @@ export default function Header() {
   return (
     <div className='py-4 max-w-7xl w-full text-white'>
       <div className=' bg-[linear-gradient(-180deg,#f53d2d,#f63)] w-[inherit]  pt-3 max-w-[inherit]  text-xs '>
-        <div className='flex flex-row justify-end gap-1 items-center pr-20 '>
+        <div className='flex flex-row justify-start sm:justify-end gap-1 items-center pr-20 m-2'>
           <Popover
             className='flex relative  items-center hover:text-gray-200 cursor-pointer '
             renderPopover={
@@ -109,7 +109,7 @@ export default function Header() {
           )}
         </div>
 
-        <nav className='flex flex-row items-center mx-5 pb-4'>
+        <nav className='flex  items-center mx-5 pb-4'>
           <Link to='/' className='mr-5'>
             <svg viewBox='0 0 192 65' className='h-8 lg:h-12 fill-white'>
               <g fillRule='evenodd'>
@@ -117,8 +117,8 @@ export default function Header() {
               </g>
             </svg>
           </Link>
-          <form className='basis-7/12'>
-            <div className='flex bg-white w-full h-10 rounded-sm'>
+          <form className=' w-7/12  '>
+            <div className='flex bg-white w-full h-10 rounded-sm '>
               <input type='text' className='text-black m-1 mx-5 text-xl outline-none w-full ' />
               <button className='  bg-shopee w-16 m-1 hover:opacity-90'>
                 <svg
@@ -139,7 +139,7 @@ export default function Header() {
             </div>
           </form>
           <Popover
-            className='ml-16'
+            className='ml-5 sm:ml-16'
             renderPopover={
               <div className='text-sm p-3 relative rounded-sm border border-gray-200 bg-white shadow-md w-[400px]'>
                 <div className='text-gray-400 capitalize'>Sản phẩm mới thêm</div>
