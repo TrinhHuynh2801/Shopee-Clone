@@ -9,7 +9,7 @@ const productApi = {
     })
   },
   getProductDetail(id: string) {
-    return http.get<Response<Product>>(`product/${id}`)
+    return http.get<Response<Product>>(`products/${id}`)
   }
 }
 export default productApi

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import ProductRating from 'src/components/ProductRating'
 import { Product as ProductType } from 'src/types/product.type'
 
@@ -20,7 +21,7 @@ function formatNumberToK(number: number) {
 }
 export default function Product({ product }: Props) {
   return (
-    <div className='mt-2 w-1/2 md:w-1/4 lg:w-1/5 '>
+    <Link to={`/${product._id}`} className='mt-2 w-1/2 md:w-1/4 lg:w-1/5 '>
       <div className='bg-white  m-2 shadow transition-transform duration-100 hover:translate-y-[-0.04rem] hover:shadow-md'>
         {/* <div className='relative w-full pt-[100%] '>
           <img
@@ -55,6 +56,6 @@ export default function Product({ product }: Props) {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }

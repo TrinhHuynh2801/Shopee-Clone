@@ -102,7 +102,7 @@ export default function ProductFilter({ categories, queryConfig }: Props) {
         ))}
       </div>
 
-      <div className='mb-8 pb-6 border-b-2 border-b-slate-200'>
+      {/* <div className='mb-8 pb-6 border-b-2 border-b-slate-200'>
         <div className='flex items-center'>
           <svg enableBackground='new 0 0 15 15' viewBox='0 0 15 15' x={0} y={0} className='stroke-black w-3 h-3 mr-2'>
             <g>
@@ -117,7 +117,7 @@ export default function ProductFilter({ categories, queryConfig }: Props) {
           </svg>
           <span className='text-base font-semibold uppercase'>Bộ lọc tìm kiếm</span>
         </div>
-      </div>
+      </div> */}
 
       <form className='mb-8  pb-6 border-b-2 border-b-slate-200' onSubmit={onSubmit}>
         <p className='mb-5'>Khoảng giá</p>

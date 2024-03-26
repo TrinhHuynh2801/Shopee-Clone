@@ -7,6 +7,7 @@ import Profile from './pages/Profile'
 import { useContext } from 'react'
 import { AppContext } from './contexts/app.context'
 import ProductList from './pages/ProductList'
+import ProductDetail from './pages/ProductDetail/ProductDetail'
 
 const ProtectedRoute = () => {
   const { isAuth } = useContext(AppContext)
@@ -25,6 +26,15 @@ export default function useRouteElements() {
       element: (
         <MainLayout>
           <ProductList />
+        </MainLayout>
+      )
+    },
+    {
+      path: '/:id',
+      index: true,
+      element: (
+        <MainLayout>
+          <ProductDetail />
         </MainLayout>
       )
     },
