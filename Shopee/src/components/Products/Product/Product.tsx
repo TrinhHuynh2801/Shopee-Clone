@@ -1,24 +1,12 @@
 import { Link } from 'react-router-dom'
 import ProductRating from 'src/components/ProductRating'
 import { Product as ProductType } from 'src/types/product.type'
+import { formatNumberToK, formatNumberWithPeriods } from 'src/utils/utils'
 
 interface Props {
   product: ProductType
 }
-function formatNumberWithPeriods(number: number) {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-}
 
-function formatNumberToK(number: number) {
-  if (number >= 1000) {
-    const dividedNumber = number / 1000
-
-    return dividedNumber.toFixed(1) + 'K'
-  } else {
-    // If the number is less than 1000, return it as it is
-    return number.toString()
-  }
-}
 export default function Product({ product }: Props) {
   return (
     <Link to={`/${product._id}`} className='mt-2 w-1/2 md:w-1/4 lg:w-1/5 '>

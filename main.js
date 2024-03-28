@@ -1,15 +1,20 @@
-var findMaxLength = function (nums) {
-  let maxLength = 0;
-  let sum = 0;
-  const sumMap = new Map();
-  for (let i = 0; i < nums.length; i++) {
-    sum += nums[i] === 0 ? -1 : +1;
-    if (sum == 0) maxLength = i + 1;
-    else if (sumMap.has(sum)) {
-      maxLength = Math.max(maxLength, i - sumMap.get(sum));
-    } else sumMap.set(sum, i);
+var maxSubarrayLength = function (nums, k) {
+  let i = 0;
+  let j = 0;
+  let n = nums.length;
+  let ans = 1;
+  let map = new Map();
+
+  while (i < n) {
+    map.set(nums[i], (map.get(nums[i]) || 0) + 1);
+    while (map.get(nums[i]) > k) {
+      map.set(nums[j], map.get(nums[j]) - 1);
+      j++;
+    }
+    ans = Math.max(ans, i - j + 1);
+    i++;
   }
-  return maxLength;
+  return ans;
 };
 
-console.log(findMaxLength([0, 1]));
+console.log(maxSubarrayLength([1, 2, 3, 1, 2], 2));

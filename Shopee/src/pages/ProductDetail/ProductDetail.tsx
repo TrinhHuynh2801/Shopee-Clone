@@ -3,18 +3,46 @@ import { useParams } from 'react-router-dom'
 import DOMPurify from 'dompurify'
 import productApi from 'src/apis/product.api'
 import ProductRating from 'src/components/ProductRating'
+import { formatNumberToK, formatNumberWithPeriods, rateSale } from 'src/utils/utils'
+import { useEffect, useMemo, useState } from 'react'
+import { Product } from 'src/types/product.type'
 
 export default function ProductDetail() {
   const { id } = useParams()
+  const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
+  console.log(currentIndexImages)
+  const [activeImage, setActiveImage] = useState('')
 
   const { data: productData } = useQuery({
     queryKey: ['product', id],
     queryFn: () => productApi.getProductDetail(id as string)
   })
   const product = productData?.data.data
+  const currentImages = useMemo(
+    () => (product ? product.images.slice(...currentIndexImages) : []),
+    [product, currentIndexImages]
+  )
 
-  const productDetail = productData?.data.data
-  console.log(productDetail)
+  const chooseActive = (img: string) => {
+    setActiveImage(img)
+  }
+  const next = () => {
+    if (currentIndexImages[1] < (product as Product).images.length) {
+      setCurrentIndexImages((prev) => [prev[0] + 1, prev[1] + 1])
+    }
+  }
+
+  const prev = () => {
+    if (currentIndexImages[0] > 0) {
+      setCurrentIndexImages((prev) => [prev[0] - 1, prev[1] - 1])
+    }
+  }
+  useEffect(() => {
+    if (product && product.images.length > 0) {
+      setActiveImage(product.images[0])
+    }
+  }, [product])
+
   if (!product) return null
   return (
     <div className='bg-gray-200 py-6'>
@@ -28,7 +56,7 @@ export default function ProductDetail() {
                 // onMouseLeave={handleRemoveZoom}
               >
                 <img
-                  // src={activeImage}
+                  src={activeImage}
                   alt={product.name}
                   className='absolute top-0 left-0 h-full w-full bg-white object-cover'
                   // ref={imageRef}
@@ -37,7 +65,7 @@ export default function ProductDetail() {
               <div className='relative mt-4 grid grid-cols-5 gap-1'>
                 <button
                   className='absolute left-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'
-                  // onClick={prev}
+                  onClick={prev}
                 >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -50,7 +78,7 @@ export default function ProductDetail() {
                     <path strokeLinecap='round' strokeLinejoin='round' d='M15.75 19.5L8.25 12l7.5-7.5' />
                   </svg>
                 </button>
-                {/* {currentImages.map((img) => {
+                {currentImages.map((img) => {
                   const isActive = img === activeImage
                   return (
                     <div className='relative w-full pt-[100%]' key={img} onMouseEnter={() => chooseActive(img)}>
@@ -62,10 +90,10 @@ export default function ProductDetail() {
                       {isActive && <div className='absolute inset-0 border-2 border-shopee' />}
                     </div>
                   )
-                })} */}
+                })}
                 <button
                   className='absolute right-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'
-                  // onClick={next}
+                  onClick={next}
                 >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -93,15 +121,19 @@ export default function ProductDetail() {
                 </div>
                 <div className='mx-4 h-4 w-[1px] bg-gray-300'></div>
                 <div>
-                  <span>{product.sold}</span>
+                  <span>{formatNumberToK(product.sold)}</span>
                   <span className='ml-1 text-gray-500'>Đã bán</span>
                 </div>
               </div>
               <div className='mt-8 flex items-center bg-gray-50 px-5 py-4'>
-                <div className='text-gray-500 line-through'>₫{product.price_before_discount}</div>
-                <div className='ml-3 text-3xl font-medium text-shopeeText'>₫{product.price}</div>
+                <div className='text-gray-500 line-through'>
+                  ₫{formatNumberWithPeriods(product.price_before_discount)}
+                </div>
+                <div className='ml-3 text-3xl font-medium text-shopeeText'>
+                  ₫{formatNumberWithPeriods(product.price)}
+                </div>
                 <div className='ml-4 rounded-sm bg-shopee px-1 py-[2px] text-xs font-semibold uppercase text-white'>
-                  {/* {rateSale(product.price_before_discount, product.price)} giảm */}
+                  {rateSale(product.price_before_discount, product.price)} giảm
                 </div>
               </div>
               <div className='mt-8 flex items-center'>
@@ -159,7 +191,7 @@ export default function ProductDetail() {
         </div>
       </div>
       <div className='mt-8'>
-        <div className='container'>
+        <div className='container ml-auto mr-auto pl-4 pr-4'>
           <div className=' bg-white p-4 shadow'>
             <div className='rounded bg-gray-50 p-4 text-lg capitalize text-slate-700'>Mô tả sản phẩm</div>
             <div className='mx-4 mt-12 mb-4 text-sm leading-loose'>
