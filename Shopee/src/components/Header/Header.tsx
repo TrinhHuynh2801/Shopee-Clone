@@ -4,10 +4,13 @@ import { useMutation } from '@tanstack/react-query'
 import { logout } from 'src/apis/auth.api'
 import { AppContext } from 'src/contexts/app.context'
 import { useContext } from 'react'
+import useSearchProducts from 'src/hooks/useSearchProducts'
 
 export default function Header() {
   const { setIsAuth, isAuth, profile, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
+  const { onSubmitSearch, register } = useSearchProducts()
+
   const logoutMutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
@@ -117,9 +120,9 @@ export default function Header() {
               </g>
             </svg>
           </Link>
-          <form className=' w-7/12  '>
+          <form className=' w-7/12  ' onSubmit={onSubmitSearch}>
             <div className='flex bg-white w-full h-10 rounded-sm '>
-              <input type='text' className='text-black m-1 mx-5 text-xl outline-none w-full ' />
+              <input type='text' {...register('name')} className='text-black m-1 mx-5 text-xl outline-none w-full ' />
               <button className='  bg-shopee w-16 m-1 hover:opacity-90'>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
