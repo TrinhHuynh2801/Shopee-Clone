@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import ProductRating from 'src/components/ProductRating'
 import { Product as ProductType } from 'src/types/product.type'
-import { formatNumberToK, formatNumberWithPeriods } from 'src/utils/utils'
+import { formatNumberToK, formatNumberWithPeriods, generateNameId } from 'src/utils/utils'
 
 interface Props {
   product: ProductType
@@ -9,7 +9,7 @@ interface Props {
 
 export default function Product({ product }: Props) {
   return (
-    <Link to={`/${product._id}`} className='mt-2 w-1/2 md:w-1/4 lg:w-1/5 '>
+    <Link to={`/${generateNameId({ name: product.name, id: product._id })}`} className='mt-2 w-1/2 md:w-1/4 lg:w-1/5 '>
       <div className='bg-white  m-2 shadow transition-transform duration-100 hover:translate-y-[-0.04rem] hover:shadow-md'>
         {/* <div className='relative w-full pt-[100%] '>
           <img

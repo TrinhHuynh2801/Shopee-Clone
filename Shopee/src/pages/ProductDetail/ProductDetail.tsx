@@ -3,15 +3,17 @@ import { useParams } from 'react-router-dom'
 import DOMPurify from 'dompurify'
 import productApi from 'src/apis/product.api'
 import ProductRating from 'src/components/ProductRating'
-import { formatNumberToK, formatNumberWithPeriods, rateSale } from 'src/utils/utils'
-import { useEffect, useMemo, useState } from 'react'
+import { formatNumberToK, formatNumberWithPeriods, getIdFromNameId, rateSale } from 'src/utils/utils'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Product } from 'src/types/product.type'
 
 export default function ProductDetail() {
-  const { id } = useParams()
+  const { nameId } = useParams()
+
+  const id = getIdFromNameId(nameId as string)
   const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
-  console.log(currentIndexImages)
   const [activeImage, setActiveImage] = useState('')
+  const imageRef = useRef<HTMLImageElement>(null)
 
   const { data: productData } = useQuery({
     queryKey: ['product', id],
@@ -37,6 +39,30 @@ export default function ProductDetail() {
       setCurrentIndexImages((prev) => [prev[0] - 1, prev[1] - 1])
     }
   }
+  const handleZoom = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const rect = event.currentTarget.getBoundingClientRect()
+    const image = imageRef.current as HTMLImageElement
+    const { naturalHeight, naturalWidth } = image
+    // Cách 1: Lấy offsetX, offsetY đơn giản khi chúng ta đã xử lý được bubble event
+    // const { offsetX, offsetY } = event.nativeEvent
+
+    // Cách 2: Lấy offsetX, offsetY khi chúng ta không xử lý được bubble event
+    const offsetX = event.pageX - (rect.x + window.scrollX)
+    const offsetY = event.pageY - (rect.y + window.scrollY)
+
+    const top = offsetY * (1 - naturalHeight / rect.height)
+    const left = offsetX * (1 - naturalWidth / rect.width)
+    image.style.width = naturalWidth + 'px'
+    image.style.height = naturalHeight + 'px'
+    image.style.maxWidth = 'unset'
+    image.style.top = top + 'px'
+    image.style.left = left + 'px'
+  }
+
+  const handleRemoveZoom = () => {
+    imageRef.current?.removeAttribute('style')
+  }
+
   useEffect(() => {
     if (product && product.images.length > 0) {
       setActiveImage(product.images[0])
@@ -52,14 +78,14 @@ export default function ProductDetail() {
             <div className='col-span-5'>
               <div
                 className='relative w-full cursor-zoom-in overflow-hidden pt-[100%] shadow'
-                // onMouseMove={handleZoom}
-                // onMouseLeave={handleRemoveZoom}
+                onMouseMove={handleZoom}
+                onMouseLeave={handleRemoveZoom}
               >
                 <img
                   src={activeImage}
                   alt={product.name}
                   className='absolute top-0 left-0 h-full w-full bg-white object-cover'
-                  // ref={imageRef}
+                  ref={imageRef}
                 />
               </div>
               <div className='relative mt-4 grid grid-cols-5 gap-1'>
