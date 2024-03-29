@@ -1,20 +1,18 @@
-var maxSubarrayLength = function (nums, k) {
-  let i = 0;
-  let j = 0;
-  let n = nums.length;
-  let ans = 1;
-  let map = new Map();
-
-  while (i < n) {
-    map.set(nums[i], (map.get(nums[i]) || 0) + 1);
-    while (map.get(nums[i]) > k) {
-      map.set(nums[j], map.get(nums[j]) - 1);
-      j++;
+var countSubarrays = function (nums, k) {
+  const max = Math.max(...nums);
+  let count = 0;
+  let ans = 0;
+  let l = 0;
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] === max) count++;
+    while (count >= k) {
+      if (nums[l] === max) count--;
+      l++;
+      console.log(l);
     }
-    ans = Math.max(ans, i - j + 1);
-    i++;
+    ans += l;
   }
   return ans;
 };
 
-console.log(maxSubarrayLength([1, 2, 3, 1, 2], 2));
+console.log(countSubarrays([1, 3, 2, 3, 3], 2));
