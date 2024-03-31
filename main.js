@@ -1,18 +1,31 @@
-var countSubarrays = function (nums, k) {
-  const max = Math.max(...nums);
-  let count = 0;
-  let ans = 0;
-  let l = 0;
-  for (let i = 0; i < nums.length; i++) {
-    if (nums[i] === max) count++;
-    while (count >= k) {
-      if (nums[l] === max) count--;
-      l++;
-      console.log(l);
+var subarraysWithKDistinct = function (nums, k) {
+  let distCount = new Array(nums.length + 1).fill(0);
+  let totalCount = 0;
+  let currCount = 0;
+  let left = 0;
+  let right = 0;
+  while (right < nums.length) {
+    console.log(distCount);
+
+    if (distCount[nums[right++]]++ === 0) {
+      k--;
     }
-    ans += l;
+    if (k < 0) {
+      --distCount[nums[left++]];
+      k++;
+      currCount = 0;
+    }
+    console.log("After " + distCount);
+
+    if (k === 0) {
+      while (distCount[nums[left]] > 1) {
+        --distCount[nums[left++]];
+        currCount++;
+      }
+      totalCount += currCount + 1;
+    }
   }
-  return ans;
+  return totalCount;
 };
 
-console.log(countSubarrays([1, 3, 2, 3, 3], 2));
+console.log(subarraysWithKDistinct([1, 2, 1, 2, 3], 2));
