@@ -1,15 +1,25 @@
 import { Link, useNavigate } from 'react-router-dom'
 import Popover from '../Popover/index'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { logout } from 'src/apis/auth.api'
 import { AppContext } from 'src/contexts/app.context'
 import { useContext } from 'react'
 import useSearchProducts from 'src/hooks/useSearchProducts'
+import { purchasesStatus } from 'src/constants/purchaseStatus'
+import purchaseApi from 'src/apis/purchase.api'
+import noproduct from 'src/assets/images/no-product.png'
+import { formatNumberWithPeriods } from 'src/utils/utils'
 
+const MAX_PURCHASES = 5
 export default function Header() {
   const { setIsAuth, isAuth, profile, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
   const { onSubmitSearch, register } = useSearchProducts()
+  const { data: purchasesInCartData } = useQuery({
+    queryKey: ['purchases', { status: purchasesStatus.inCart }],
+    queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart }),
+    enabled: isAuth
+  })
 
   const logoutMutation = useMutation({
     mutationFn: logout,
@@ -22,6 +32,8 @@ export default function Header() {
   const handleLogout = () => {
     logoutMutation.mutate()
   }
+  const purchasesInCart = purchasesInCartData?.data.data
+
   return (
     <div className='py-4 max-w-7xl w-full text-white'>
       <div className=' bg-[linear-gradient(-180deg,#f53d2d,#f63)] w-[inherit]  pt-3 max-w-[inherit]  text-xs '>
@@ -120,7 +132,7 @@ export default function Header() {
               </g>
             </svg>
           </Link>
-          <form className=' w-7/12  ' onSubmit={onSubmitSearch}>
+          <form className=' w-7/12  mr-14' onSubmit={onSubmitSearch}>
             <div className='flex bg-white w-full h-10 rounded-sm '>
               <input type='text' {...register('name')} className='text-black m-1 mx-5 text-xl outline-none w-full ' />
               <button className='  bg-shopee w-16 m-1 hover:opacity-90'>
@@ -142,80 +154,73 @@ export default function Header() {
             </div>
           </form>
           <Popover
-            className='ml-5 sm:ml-16'
             renderPopover={
-              <div className='text-sm p-3 relative rounded-sm border border-gray-200 bg-white shadow-md w-[400px]'>
-                <div className='text-gray-400 capitalize'>Sản phẩm mới thêm</div>
-
-                <div className='flex mt-4 hover:bg-gray-200 p-1'>
-                  <div className='flex-shrink-0'>
-                    <img
-                      alt='product'
-                      src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lgetahyf8r930a_tn'
-                      className='h-8 w-8 object-cover'
-                    />
+              <div className='relative  max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-md'>
+                {purchasesInCart && purchasesInCart.length > 0 ? (
+                  <div className='p-2'>
+                    <div className='capitalize text-gray-400'>Sản phẩm mới thêm</div>
+                    <div className='mt-5'>
+                      {purchasesInCart.slice(0, MAX_PURCHASES).map((purchase) => (
+                        <div className='mt-2 flex py-2 hover:bg-gray-100' key={purchase._id}>
+                          <div className='flex-shrink-0'>
+                            <img
+                              src={purchase.product.image}
+                              alt={purchase.product.name}
+                              className='h-11 w-11 object-cover'
+                            />
+                          </div>
+                          <div className='ml-2 flex-grow overflow-hidden'>
+                            <div className='truncate'>{purchase.product.name}</div>
+                          </div>
+                          <div className='ml-2 flex-shrink-0'>
+                            <span className='text-orange'>₫{formatNumberWithPeriods(purchase.product.price)}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className='mt-6 flex items-center justify-between'>
+                      <div className='text-xs capitalize text-gray-500'>
+                        {purchasesInCart.length > MAX_PURCHASES ? purchasesInCart.length - MAX_PURCHASES : ''} Thêm hàng
+                        vào giỏ
+                      </div>
+                      <Link
+                        to={'/cart'}
+                        className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'
+                      >
+                        Xem giỏ hàng
+                      </Link>
+                    </div>
                   </div>
-                  <div className='truncate ml-2'>Nắp chai thinner kiểu vặn - Dụng cụ mô hình - inb giao hỏa tốc</div>
-                  <div className='ml-2 text-shopeeText'>₫30.000</div>
-                </div>
-                <div className='flex mt-4 hover:bg-gray-200 p-1'>
-                  <div className='flex-shrink-0'>
-                    <img
-                      alt='product'
-                      src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lgetahyf8r930a_tn'
-                      className='h-8 w-8 object-cover'
-                    />
+                ) : (
+                  <div className='flex h-[300px] w-[300px] flex-col items-center justify-center p-2'>
+                    <img src={noproduct} alt='no purchase' className='h-24 w-24' />
+                    <div className='mt-3 capitalize'>Chưa có sản phẩm</div>
                   </div>
-                  <div className='truncate ml-2'>Nắp chai thinner kiểu vặn - Dụng cụ mô hình - inb giao hỏa tốc</div>
-                  <div className='ml-2 text-shopeeText'>₫30.000</div>
-                </div>
-                <div className='flex mt-4 hover:bg-gray-200 p-1'>
-                  <div className='flex-shrink-0'>
-                    <img
-                      alt='product'
-                      src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lgetahyf8r930a_tn'
-                      className='h-8 w-8 object-cover'
-                    />
-                  </div>
-                  <div className='truncate ml-2'>Nắp chai thinner kiểu vặn - Dụng cụ mô hình - inb giao hỏa tốc</div>
-                  <div className='ml-2 text-shopeeText'>₫30.000</div>
-                </div>
-                <div className='flex mt-4 hover:bg-gray-200 p-1'>
-                  <div className='flex-shrink-0'>
-                    <img
-                      alt='product'
-                      src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lgetahyf8r930a_tn'
-                      className='h-8 w-8 object-cover'
-                    />
-                  </div>
-                  <div className='truncate ml-2'>Nắp chai thinner kiểu vặn - Dụng cụ mô hình - inb giao hỏa tốc</div>
-                  <div className='ml-2 text-shopeeText'>₫30.000</div>
-                </div>
-                <div className='flex mt-6 justify-between items-center'>
-                  <div className='text-gray-600 capitalize'>34 Thêm hàng vào giỏ</div>
-                  <button className='hover:opacity-90 text-white bg-shopeeText capitalize rounded-sm px-3 py-2'>
-                    Xem giỏ hàng
-                  </button>
-                </div>
+                )}
               </div>
             }
           >
-            <Link to='/'>
+            <button className='relative'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
                 viewBox='0 0 24 24'
-                strokeWidth='1.5'
+                strokeWidth={1.5}
                 stroke='currentColor'
-                className='w-7 h-7'
+                className='h-8 w-8'
               >
                 <path
                   strokeLinecap='round'
                   strokeLinejoin='round'
-                  d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
+                  d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z'
                 />
               </svg>
-            </Link>
+              {purchasesInCart && purchasesInCart.length > 0 && (
+                <span className='absolute top-[-5px] left-[17px] rounded-full bg-white px-[9px] py-[1px] text-xs text-shopeeText '>
+                  {purchasesInCart?.length}
+                </span>
+              )}
+            </button>
           </Popover>
         </nav>
       </div>

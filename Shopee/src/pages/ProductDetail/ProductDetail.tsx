@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import DOMPurify from 'dompurify'
 import productApi from 'src/apis/product.api'
@@ -8,9 +8,13 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Product as ProductType, ProductListConfig } from 'src/types/product.type'
 import Product from 'src/components/Products/Product'
 import QuantityController from 'src/components/QuantityController'
+import purchaseApi from 'src/apis/purchase.api'
+import { toast } from 'react-toastify'
+import { purchasesStatus } from 'src/constants/purchaseStatus'
 
 export default function ProductDetail() {
   const { nameId } = useParams()
+  const queryClient = useQueryClient()
   // const { t } = useTranslation(['product'])
   const id = getIdFromNameId(nameId as string)
   const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
@@ -38,6 +42,8 @@ export default function ProductDetail() {
     staleTime: 3 * 60 * 1000,
     enabled: Boolean(product)
   })
+
+  const addToCartMutation = useMutation({ mutationFn: purchaseApi.addToCart })
 
   const chooseActive = (img: string) => {
     setActiveImage(img)
@@ -79,6 +85,19 @@ export default function ProductDetail() {
   const handleBuyCount = (value: number) => {
     setBuyCount(value)
   }
+
+  const addToCart = () => {
+    addToCartMutation.mutate(
+      { buy_count: buyCount, product_id: product?._id as string },
+      {
+        onSuccess: (data) => {
+          toast.success(data.data.message, { autoClose: 1000 })
+          queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+        }
+      }
+    )
+  }
+
   useEffect(() => {
     if (product && product.images.length > 0) {
       setActiveImage(product.images[0])
@@ -193,7 +212,7 @@ export default function ProductDetail() {
               </div>
               <div className='mt-8 flex items-center'>
                 <button
-                  // onClick={addToCart}
+                  onClick={addToCart}
                   className='flex h-12 items-center justify-center rounded-sm border border-shopee bg-shopee/10 px-5 capitalize text-shopeeText shadow-sm hover:bg-shopee/5'
                 >
                   <svg
