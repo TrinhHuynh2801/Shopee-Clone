@@ -1,16 +1,14 @@
-var countStudents = function (students, sandwiches) {
-  const count = {
-    1: 0,
-    0: 0,
-  };
-  for (const student of students) {
-    count[student]++;
+var timeRequiredToBuy = function (tickets, k) {
+  let time = 0;
+  while (tickets[k] > 0) {
+    for (let i = 0; i < tickets.length; i++) {
+      if (tickets[i] > 0) {
+        time++;
+        tickets[i]--;
+      }
+      if (tickets[k] == 0) return time;
+    }
   }
-
-  for (const sandwich of sandwiches) {
-    if (--count[sandwich] < 0) return count[+!sandwich];
-  }
-  return 0;
 };
 
-console.log(countStudents([1, 1, 1, 0, 0, 1], [1, 0, 0, 0, 1, 1]));
+console.log(timeRequiredToBuy([84, 49, 5, 24, 70, 77, 87, 8], 3));

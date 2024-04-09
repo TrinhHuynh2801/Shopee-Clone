@@ -12,6 +12,17 @@ const purchaseApi = {
     return http.get<Response<Purchase[]>>(`${URL}`, {
       params
     })
+  },
+  buyProducts(body: { product_id: string; buy_count: number }[]) {
+    return http.post<Response<Purchase[]>>(`${URL}/buy-products`, body)
+  },
+  updatePurchase(body: { product_id: string; buy_count: number }) {
+    return http.put<Response<Purchase>>(`${URL}/update-purchase`, body)
+  },
+  deletePurchase(purchaseIds: string[]) {
+    return http.delete<Response<{ deleted_count: number }>>(`${URL}`, {
+      data: purchaseIds
+    })
   }
 }
 

@@ -1,6 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Popover from '../Popover/index'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { logout } from 'src/apis/auth.api'
 import { AppContext } from 'src/contexts/app.context'
 import { useContext } from 'react'
@@ -13,7 +13,8 @@ import { formatNumberWithPeriods } from 'src/utils/utils'
 const MAX_PURCHASES = 5
 export default function Header() {
   const { setIsAuth, isAuth, profile, setProfile } = useContext(AppContext)
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const { onSubmitSearch, register } = useSearchProducts()
   const { data: purchasesInCartData } = useQuery({
     queryKey: ['purchases', { status: purchasesStatus.inCart }],
@@ -26,7 +27,8 @@ export default function Header() {
     onSuccess: () => {
       setIsAuth(false)
       setProfile(null)
-      navigate('login')
+      queryClient.removeQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+      // navigate('/login')
     }
   })
   const handleLogout = () => {
@@ -82,7 +84,7 @@ export default function Header() {
               renderPopover={
                 <div className='relative rounded-sm border border-gray-200 bg-white shadow-md'>
                   <Link
-                    to='profile'
+                    to='/profile'
                     className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
                   >
                     Tài khoản của tôi
@@ -112,12 +114,12 @@ export default function Header() {
           ) : (
             <div className='flex items-center  '>
               <div className='border-r-2 border-[hsla(0,0%,100%,.4)]'>
-                <Link to='register' className='cursor-pointer p-2 hover:text-gray-200'>
+                <Link to='/register' className='cursor-pointer p-2 hover:text-gray-200'>
                   Đăng ký
                 </Link>
               </div>
 
-              <Link to='login' className='cursor-pointer p-2 hover:text-gray-200'>
+              <Link to='/login' className='cursor-pointer p-2 hover:text-gray-200'>
                 Đăng nhập
               </Link>
             </div>
@@ -184,7 +186,7 @@ export default function Header() {
                         vào giỏ
                       </div>
                       <Link
-                        to={'/cart'}
+                        to='/cart'
                         className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'
                       >
                         Xem giỏ hàng
