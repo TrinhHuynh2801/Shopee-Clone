@@ -37,8 +37,8 @@ export default function Header() {
   const purchasesInCart = purchasesInCartData?.data.data
 
   return (
-    <div className='py-4 max-w-7xl w-full text-white'>
-      <div className=' bg-[linear-gradient(-180deg,#f53d2d,#f63)] w-[inherit]  pt-3 max-w-[inherit]  text-xs '>
+    <div className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2 text-white'>
+      <div className=' container'>
         <div className='flex flex-row justify-start sm:justify-end gap-1 items-center pr-20 m-2'>
           <Popover
             className='flex relative  items-center hover:text-gray-200 cursor-pointer '
@@ -187,7 +187,7 @@ export default function Header() {
                       </div>
                       <Link
                         to='/cart'
-                        className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'
+                        className='rounded-sm bg-shopee px-4 py-2 capitalize text-white hover:bg-opacity-90'
                       >
                         Xem giỏ hàng
                       </Link>
