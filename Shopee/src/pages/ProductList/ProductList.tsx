@@ -23,7 +23,7 @@ export default function ProductList() {
     queryFn: () => categoryApi.getCategoryList()
   })
   return (
-    <div className='flex bg-slate-50 border-b-4 pb-24 border-shopee '>
+    <div className='flex bg-slate-50 border-b-4 pb-24 border-shopee mt-10'>
       {categoryData && <ProductFilter categories={categoryData.data.data} queryConfig={queryConfig} />}
       {productsData && (
         <div className='w-5/6'>
