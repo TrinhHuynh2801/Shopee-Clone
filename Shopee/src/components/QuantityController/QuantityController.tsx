@@ -18,6 +18,7 @@ export default function QuantityController({
   onFocusOut,
   classNameWrapper = 'ml-10',
   value,
+  disabled,
   ...rest
 }: Props) {
   const [localValue, setLocalValue] = useState<number>(Number(value || 0))
@@ -57,8 +58,9 @@ export default function QuantityController({
   return (
     <div className={'flex items-center ' + classNameWrapper}>
       <button
-        className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'
+        className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600 disabled:cursor-not-allowed disabled:opacity-70'
         onClick={decrease}
+        disabled={disabled}
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -78,11 +80,13 @@ export default function QuantityController({
         onChange={handleChange}
         onBlur={handleBlur}
         value={value || localValue}
+        disabled={disabled}
         {...rest}
       />
       <button
-        className='flex h-8 w-8 items-center justify-center rounded-r-sm border border-gray-300 text-gray-600'
+        className='flex h-8 w-8 items-center justify-center rounded-r-sm border border-gray-300 text-gray-600 disabled:cursor-not-allowed disabled:opacity-70'
         onClick={increase}
+        disabled={disabled}
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'
