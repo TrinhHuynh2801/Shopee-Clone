@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom'
 import purchaseApi from 'src/apis/purchase.api'
 import QuantityController from 'src/components/QuantityController'
 import { purchasesStatus } from 'src/constants/purchaseStatus'
-import { ExtendedPurchase } from 'src/types/purchase'
+import { ExtendedPurchase, Purchase } from 'src/types/purchase'
 import { formatNumberWithPeriods, generateNameId } from 'src/utils/utils'
 
 export default function Cart() {
-  const [extendedPurchase, setExtendedPurchase] = useState<ExtendedPurchase[]>([])
+  const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>([])
   const queryClient = useQueryClient()
   const { data: purchasesInCartData } = useQuery({
     queryKey: ['purchases', { status: purchasesStatus.inCart }],
@@ -24,33 +24,42 @@ export default function Cart() {
   })
   const purchasesInCart = purchasesInCartData?.data.data
   const handleCheck = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setExtendedPurchase(
+    setExtendedPurchases(
       produce((draft) => {
         draft[index].checked = event.target.checked
       })
     )
   }
-  const handleQuantity = (index: number, value: number) => {
-    const purchase = extendedPurchase[index]
-    setExtendedPurchase(
-      produce((draft) => {
-        draft[index].disabled = true
-      })
-    )
-    updatePurchaseMutation.mutate({ product_id: purchase.product._id, buy_count: value })
+  const handleQuantity = (index: number, value: number, disabled: boolean) => {
+    if (disabled) {
+      const purchase = extendedPurchases[index]
+      setExtendedPurchases(
+        produce((draft) => {
+          draft[index].disabled = true
+        })
+      )
+      updatePurchaseMutation.mutate({ product_id: purchase.product._id, buy_count: value })
+    }
   }
   const handleCheckAll = () => {
-    setExtendedPurchase((prev) =>
+    setExtendedPurchases((prev) =>
       prev.map((purchase) => ({
         ...purchase,
         checked: !isCheckedAll
       }))
     )
   }
-  const isCheckedAll = extendedPurchase.every((purchase) => purchase.checked)
+  const handleTypeQuantity = (purchaseIndex: number) => (value: number) => {
+    setExtendedPurchases(
+      produce((draft) => {
+        draft[purchaseIndex].buy_count = value
+      })
+    )
+  }
+  const isCheckedAll = extendedPurchases.every((purchase) => purchase.checked)
 
   useEffect(() => {
-    setExtendedPurchase((prev) => {
+    setExtendedPurchases((prev) => {
       const tempPurchase = [...prev]
       return (
         purchasesInCart?.map((purchase, index) => ({
@@ -90,7 +99,7 @@ export default function Cart() {
               </div>
             </div>
             <div className='my-3 rounded-sm bg-white p-5 shadow'>
-              {extendedPurchase?.map((purchase, index) => (
+              {extendedPurchases?.map((purchase, index) => (
                 <div
                   key={purchase._id}
                   className='mb-5 grid grid-cols-12 rounded-sm border border-gray-200 bg-white py-5 px-4 text-sm text-black first:mt-0'
@@ -143,8 +152,18 @@ export default function Cart() {
                           value={purchase.buy_count}
                           classNameWrapper='flex items-center '
                           disabled={purchase.disabled}
-                          onIncrease={(value) => handleQuantity(index, value)}
-                          onDecrease={(value) => handleQuantity(index, value)}
+                          onIncrease={(value) => handleQuantity(index, value, value < purchase.product.quantity)}
+                          onDecrease={(value) => handleQuantity(index, value, value > 1)}
+                          onType={handleTypeQuantity(index)}
+                          onFocusOut={(value) =>
+                            handleQuantity(
+                              index,
+                              value,
+                              value >= 1 &&
+                                value <= purchase.product.quantity &&
+                                value !== (purchasesInCart as Purchase[])[index].buy_count
+                            )
+                          }
                         />
                       </div>
                       <div className='col-span-1'>
