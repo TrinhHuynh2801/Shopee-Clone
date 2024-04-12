@@ -8,6 +8,14 @@ import { purchasesStatus } from 'src/constants/purchaseStatus'
 import { ExtendedPurchase, Purchase } from 'src/types/purchase'
 import { formatNumberWithPeriods, generateNameId } from 'src/utils/utils'
 
+function keyBy<T>(array: T[], key: keyof T): { [key: string]: T } {
+  const result: { [key: string]: T } = {}
+  for (const item of array) {
+    result[String(item[key])] = item
+  }
+  return result
+}
+
 export default function Cart() {
   const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>([])
   const checkedList = extendedPurchases.filter((purchase) => purchase.checked)
@@ -78,11 +86,11 @@ export default function Cart() {
 
   useEffect(() => {
     setExtendedPurchases((prev) => {
-      const tempPurchase = [...prev]
+      const extendedPurchasesObject = keyBy(prev, '_id')
       return (
         purchasesInCart?.map((purchase, index) => ({
           ...purchase,
-          checked: Boolean(tempPurchase[index]?.checked),
+          checked: Boolean(extendedPurchasesObject[index]?.checked),
           disabled: false
         })) || []
       )
