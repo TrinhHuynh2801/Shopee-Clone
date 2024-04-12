@@ -10,6 +10,7 @@ import { formatNumberWithPeriods, generateNameId } from 'src/utils/utils'
 
 export default function Cart() {
   const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>([])
+  const checkedList = extendedPurchases.filter((purchase) => purchase.checked)
   const queryClient = useQueryClient()
   const { data: purchasesInCartData } = useQuery({
     queryKey: ['purchases', { status: purchasesStatus.inCart }],
@@ -22,7 +23,16 @@ export default function Cart() {
       queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
     }
   })
+
+  const deletePurchaseMutation = useMutation({
+    mutationFn: purchaseApi.deletePurchase,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+    }
+  })
+
   const purchasesInCart = purchasesInCartData?.data.data
+
   const handleCheck = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setExtendedPurchases(
       produce((draft) => {
@@ -55,6 +65,14 @@ export default function Cart() {
         draft[purchaseIndex].buy_count = value
       })
     )
+  }
+
+  const handleDelete = (purchaseIndex: string) => {
+    deletePurchaseMutation.mutate([purchaseIndex])
+  }
+  const handleDeleteMany = () => {
+    const purchaseIndexList = checkedList.map((purchase) => purchase._id)
+    deletePurchaseMutation.mutate(purchaseIndexList)
   }
   const isCheckedAll = extendedPurchases.every((purchase) => purchase.checked)
 
@@ -172,7 +190,12 @@ export default function Cart() {
                         </span>
                       </div>
                       <div className='col-span-1'>
-                        <button className='bg-none text-black transition-colors hover:text-shopee'>Xóa</button>
+                        <button
+                          onClick={() => handleDelete(purchase._id)}
+                          className='bg-none text-black transition-colors hover:text-shopee'
+                        >
+                          Xóa
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -194,7 +217,9 @@ export default function Cart() {
             <button className='mx-3 border-none bg-none ' onClick={handleCheckAll}>
               Chọn tất cả
             </button>
-            <button className='mx-3 border-none bg-none'>Xóa</button>
+            <button className='mx-3 border-none bg-none' onClick={handleDeleteMany}>
+              Xóa
+            </button>
           </div>
 
           <div className='mt-5 flex flex-col sm:ml-auto sm:mt-0 sm:flex-row sm:items-center'>
