@@ -60,7 +60,7 @@ export default function QuantityController({
       <button
         className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600 disabled:cursor-not-allowed disabled:opacity-70'
         onClick={decrease}
-        disabled={disabled}
+        disabled={disabled || value === 1}
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -86,7 +86,7 @@ export default function QuantityController({
       <button
         className='flex h-8 w-8 items-center justify-center rounded-r-sm border border-gray-300 text-gray-600 disabled:cursor-not-allowed disabled:opacity-70'
         onClick={increase}
-        disabled={disabled}
+        disabled={disabled || value === max}
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'

@@ -1,19 +1,18 @@
-var firstMissingPositive = function (nums) {
-  for (i = 0; i < nums.length; i++) {
-    if (nums[i] < 0) nums[i] = 0;
-  }
-  for (i = 0; i < nums.length; i++) {
-    const val = Math.abs(nums[i]);
-    if (1 <= val && val <= nums.length) {
-      if (nums[val - 1] === 0) nums[val - 1] = -val;
-      else nums[val - 1] = -Math.abs(nums[val - 1]);
+var largestRectangleArea = function (heights) {
+  heights.push(0);
+  let stack = [];
+  let ans = 0;
+  for (let i = 0; i < heights.length; i++) {
+    let start = i;
+    console.log(stack);
+    while (stack.length && stack[stack.length - 1][1] > heights[i]) {
+      let [pos, height] = stack.pop();
+      ans = Math.max(ans, height * (i - pos));
+      start = pos;
     }
-    console.log(nums);
+    stack.push([start, heights[i]]);
   }
-  for (i = 0; i < nums.length; i++) {
-    if (nums[i] >= 0) return i + 1;
-  }
-  return nums.length + 1;
+  return ans;
 };
 
-console.log(firstMissingPositive([1, 2, 3, 4, 5, 8]));
+console.log(largestRectangleArea([2, 0, 2, 1, 1]));
