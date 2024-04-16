@@ -18,7 +18,7 @@ class Http {
     this.instance.interceptors.request.use(
       (config) => {
         if (this.accessToken && config.headers) {
-          config.headers.authorization = this.accessToken
+          config.headers.Authorization = this.accessToken
           return config
         }
         return config
@@ -47,6 +47,9 @@ class Http {
           const data: any | undefined = error.response?.data
           const message = data.message || error.message
           toast.error(message)
+        }
+        if (error.response?.status === 401) {
+          clearAccessToken()
         }
         return Promise.reject(error)
       }

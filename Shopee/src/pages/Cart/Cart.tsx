@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { produce } from 'immer'
-import { useContext, useEffect, useMemo } from 'react'
+import { Fragment, useContext, useEffect, useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import purchaseApi from 'src/apis/purchase.api'
@@ -9,6 +9,7 @@ import { purchasesStatus } from 'src/constants/purchaseStatus'
 import { AppContext } from 'src/contexts/app.context'
 import { Purchase } from 'src/types/purchase'
 import { formatNumberWithPeriods, generateNameId } from 'src/utils/utils'
+import noproduct from 'src/assets/images/no-product.png'
 
 function keyBy<T>(array: T[], key: keyof T): { [key: string]: T } {
   const result: { [key: string]: T } = {}
@@ -147,33 +148,33 @@ export default function Cart() {
 
   return (
     <div className='bg-neutral-100 py-5'>
-      <div className='container'>
-        <div className='overflow-auto'>
-          <div className='min-w-[1000px]'>
-            <div className='grid grid-cols-12 rounded-sm bg-white py-5 px-9 text-sm capitalize text-gray-500 shadow'>
-              <div className='col-span-6'>
-                <div className='flex items-center'>
-                  <div className='flex flex-shrink-0 items-center justify-center pr-3'>
-                    <input
-                      type='checkbox'
-                      className='h-5 w-5 accent-shopee'
-                      checked={isCheckedAll}
-                      onChange={handleCheckAll}
-                    />
+      {extendedPurchases.length > 0 ? (
+        <div className='container'>
+          <div className='overflow-auto'>
+            <div className='min-w-[1000px]'>
+              <div className='grid grid-cols-12 rounded-sm bg-white py-5 px-9 text-sm capitalize text-gray-500 shadow'>
+                <div className='col-span-6'>
+                  <div className='flex items-center'>
+                    <div className='flex flex-shrink-0 items-center justify-center pr-3'>
+                      <input
+                        type='checkbox'
+                        className='h-5 w-5 accent-shopee'
+                        checked={isCheckedAll}
+                        onChange={handleCheckAll}
+                      />
+                    </div>
+                    <div className='flex-grow text-black'>sản phẩm</div>
                   </div>
-                  <div className='flex-grow text-black'>sản phẩm</div>
+                </div>
+                <div className='col-span-6'>
+                  <div className='grid grid-cols-5 text-center'>
+                    <div className='col-span-2'>Đơn giá</div>
+                    <div className='col-span-1'>Số lượng</div>
+                    <div className='col-span-1'>Số tiền</div>
+                    <div className='col-span-1'>Thao tác</div>
+                  </div>
                 </div>
               </div>
-              <div className='col-span-6'>
-                <div className='grid grid-cols-5 text-center'>
-                  <div className='col-span-2'>Đơn giá</div>
-                  <div className='col-span-1'>Số lượng</div>
-                  <div className='col-span-1'>Số tiền</div>
-                  <div className='col-span-1'>Thao tác</div>
-                </div>
-              </div>
-            </div>
-            {extendedPurchases.length > 0 && (
               <div className='my-3 rounded-sm bg-white p-5 shadow'>
                 {extendedPurchases.map((purchase, index) => (
                   <div
@@ -260,50 +261,67 @@ export default function Cart() {
                   </div>
                 ))}
               </div>
-            )}
-          </div>
-        </div>
-        <div className='sticky bottom-0 z-10 mt-8 flex flex-col rounded-sm border border-gray-100 bg-white p-5 shadow sm:flex-row sm:items-center'>
-          <div className='flex items-center'>
-            <div className='flex flex-shrink-0 items-center justify-center pr-3'>
-              <input
-                type='checkbox'
-                onChange={handleCheckAll}
-                checked={isCheckedAll}
-                className='h-5 w-5 accent-shopee'
-              />
             </div>
-            <button className='mx-3 border-none bg-none ' onClick={handleCheckAll}>
-              Chọn tất cả ({extendedPurchases.length})
-            </button>
-            <button className='mx-3 border-none bg-none' onClick={handleDeleteMany}>
-              Xóa
-            </button>
           </div>
+          <div className='sticky bottom-0 z-10 mt-8 flex flex-col rounded-sm border border-gray-100 bg-white p-5 shadow sm:flex-row sm:items-center'>
+            <div className='flex items-center'>
+              <div className='flex flex-shrink-0 items-center justify-center pr-3'>
+                <input
+                  type='checkbox'
+                  onChange={handleCheckAll}
+                  checked={isCheckedAll}
+                  className='h-5 w-5 accent-shopee'
+                />
+              </div>
+              <button className='mx-3 border-none bg-none ' onClick={handleCheckAll}>
+                Chọn tất cả ({extendedPurchases.length})
+              </button>
+              <button className='mx-3 border-none bg-none' onClick={handleDeleteMany}>
+                Xóa
+              </button>
+            </div>
 
-          <div className='mt-5 flex flex-col sm:ml-auto sm:mt-0 sm:flex-row sm:items-center'>
-            <div>
-              <div className='flex items-center sm:justify-end'>
-                <div>Tổng thanh toán ({checkCount} sản phẩm):</div>
-                <div className='ml-2 text-2xl text-shopeeText'>
-                  ₫{formatNumberWithPeriods(totalCheckedPurchasePrice)}
+            <div className='mt-5 flex flex-col sm:ml-auto sm:mt-0 sm:flex-row sm:items-center'>
+              <div>
+                <div className='flex items-center sm:justify-end'>
+                  <div>Tổng thanh toán ({checkCount} sản phẩm):</div>
+                  <div className='ml-2 text-2xl text-shopeeText'>
+                    ₫{formatNumberWithPeriods(totalCheckedPurchasePrice)}
+                  </div>
+                </div>
+                <div className='flex items-center text-sm sm:justify-end'>
+                  <div className='text-gray-500'>Tiết kiệm</div>
+                  <div className='ml-6 text-shopeeText'>
+                    ₫{formatNumberWithPeriods(totalCheckedPurchaseSavingPrice)}
+                  </div>
                 </div>
               </div>
-              <div className='flex items-center text-sm sm:justify-end'>
-                <div className='text-gray-500'>Tiết kiệm</div>
-                <div className='ml-6 text-shopeeText'>₫{formatNumberWithPeriods(totalCheckedPurchaseSavingPrice)}</div>
-              </div>
+              <button
+                onClick={handleBuyProducts}
+                disabled={buyProductsMutation.isPending}
+                className='mt-5 flex h-10 w-52 items-center justify-center bg-shopee text-sm uppercase text-white hover:bg-red-600 sm:ml-4 sm:mt-0'
+              >
+                Mua hàng
+              </button>
             </div>
-            <button
-              onClick={handleBuyProducts}
-              disabled={buyProductsMutation.isPending}
-              className='mt-5 flex h-10 w-52 items-center justify-center bg-shopee text-sm uppercase text-white hover:bg-red-600 sm:ml-4 sm:mt-0'
-            >
-              Mua hàng
-            </button>
           </div>
         </div>
-      </div>
+      ) : (
+        <Fragment>
+          <div className='text-center'>
+            <img src={noproduct} alt='no purchase' className='mx-auto h-24 w-24' />
+            <div className='mt-5 font-bold text-gray-400'>Giỏ hàng của bạn còn trống</div>
+            <div className='mt-5 text-center'>
+              <Link
+                to='/'
+                className=' rounded-sm bg-shopee px-10 py-2  uppercase text-white transition-all hover:bg-orange/80'
+              >
+                Mua ngay
+              </Link>
+            </div>
+          </div>
+        </Fragment>
+      )}
     </div>
   )
 }
