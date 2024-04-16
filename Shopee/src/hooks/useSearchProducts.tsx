@@ -1,14 +1,16 @@
 import omit from 'lodash/omit'
 import { useForm } from 'react-hook-form'
 import useQueryConfig from './useQueryConfig'
-import { createSearchParams, useNavigate } from 'react-router-dom'
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom'
 
 export default function useSearchProducts() {
+  const [searchParams] = useSearchParams()
+  const defaultName = searchParams.get('name')
   const queryConfig = useQueryConfig()
 
   const { register, handleSubmit } = useForm({
     defaultValues: {
-      name: ''
+      name: defaultName || ''
     }
   })
   const navigate = useNavigate()
@@ -27,7 +29,7 @@ export default function useSearchProducts() {
           name: data.name.trim()
         }
     navigate({
-      pathname: '',
+      pathname: '/',
       search: createSearchParams(config).toString()
     })
   })
