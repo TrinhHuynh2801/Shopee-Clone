@@ -1,12 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { produce } from 'immer'
-import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useContext, useEffect, useMemo } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import purchaseApi from 'src/apis/purchase.api'
 import QuantityController from 'src/components/QuantityController'
 import { purchasesStatus } from 'src/constants/purchaseStatus'
-import { ExtendedPurchase, Purchase } from 'src/types/purchase'
+import { AppContext } from 'src/contexts/app.context'
+import { Purchase } from 'src/types/purchase'
 import { formatNumberWithPeriods, generateNameId } from 'src/utils/utils'
 
 function keyBy<T>(array: T[], key: keyof T): { [key: string]: T } {
@@ -18,8 +19,10 @@ function keyBy<T>(array: T[], key: keyof T): { [key: string]: T } {
 }
 
 export default function Cart() {
-  const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>([])
+  const { extendedPurchases, setExtendedPurchases } = useContext(AppContext)
   const checkedList = useMemo(() => extendedPurchases.filter((purchase) => purchase.checked), [extendedPurchases])
+  const location = useLocation()
+  const choosenPurchaseIdFromLocation = (location.state as { purchaseId: string } | null)?.purchaseId
   const checkCount = checkedList.length
   const totalCheckedPurchasePrice = useMemo(
     () =>
@@ -124,14 +127,24 @@ export default function Cart() {
     setExtendedPurchases((prev) => {
       const extendedPurchasesObject = keyBy(prev, '_id')
       return (
-        purchasesInCart?.map((purchase) => ({
-          ...purchase,
-          checked: Boolean(extendedPurchasesObject[purchase._id]?.checked),
-          disabled: false
-        })) || []
+        purchasesInCart?.map((purchase) => {
+          const isChoosenPurchaseFromLocation = choosenPurchaseIdFromLocation === purchase._id
+          return {
+            ...purchase,
+            checked: isChoosenPurchaseFromLocation || Boolean(extendedPurchasesObject[purchase._id]?.checked),
+            disabled: false
+          }
+        }) || []
       )
     })
-  }, [purchasesInCart])
+  }, [purchasesInCart, choosenPurchaseIdFromLocation, setExtendedPurchases])
+
+  useEffect(() => {
+    return () => {
+      history.replaceState(null, '')
+    }
+  }, [])
+
   return (
     <div className='bg-neutral-100 py-5'>
       <div className='container'>

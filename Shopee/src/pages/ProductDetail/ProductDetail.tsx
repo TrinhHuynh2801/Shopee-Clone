@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import DOMPurify from 'dompurify'
 import productApi from 'src/apis/product.api'
 import ProductRating from 'src/components/ProductRating'
@@ -15,13 +15,14 @@ import { purchasesStatus } from 'src/constants/purchaseStatus'
 export default function ProductDetail() {
   const { nameId } = useParams()
   const queryClient = useQueryClient()
+
   // const { t } = useTranslation(['product'])
   const id = getIdFromNameId(nameId as string)
   const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
   const [activeImage, setActiveImage] = useState('')
   const imageRef = useRef<HTMLImageElement>(null)
   const [buyCount, setBuyCount] = useState(1)
-
+  const navigate = useNavigate()
   const { data: productData } = useQuery({
     queryKey: ['product', id],
     queryFn: () => productApi.getProductDetail(id as string)
@@ -96,6 +97,16 @@ export default function ProductDetail() {
         }
       }
     )
+  }
+
+  const buyNow = async () => {
+    const res = await addToCartMutation.mutateAsync({ buy_count: buyCount, product_id: product?._id as string })
+    const purchase = res.data.data
+    navigate('/cart', {
+      state: {
+        purchaseId: purchase._id
+      }
+    })
   }
 
   useEffect(() => {
@@ -241,7 +252,7 @@ export default function ProductDetail() {
                   Thêm vào giỏ hàng
                 </button>
                 <button
-                  // onClick={buyNow}
+                  onClick={buyNow}
                   className='fkex ml-4 h-12 min-w-[5rem] items-center justify-center rounded-sm bg-shopee px-5 capitalize text-white shadow-sm outline-none hover:bg-shopee/90'
                 >
                   Mua ngay
