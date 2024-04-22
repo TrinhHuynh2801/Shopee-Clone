@@ -1,18 +1,35 @@
-var largestRectangleArea = function (heights) {
-  heights.push(0);
-  let stack = [];
-  let ans = 0;
-  for (let i = 0; i < heights.length; i++) {
-    let start = i;
-    console.log(stack);
-    while (stack.length && stack[stack.length - 1][1] > heights[i]) {
-      let [pos, height] = stack.pop();
-      ans = Math.max(ans, height * (i - pos));
-      start = pos;
+var openLock = function (deadends, target) {
+  if (target === "0000") return 0;
+  let queue = [0],
+    seen = new Uint8Array(10000);
+
+  for (let d of deadends) seen[~~d] = 1;
+  target = ~~target;
+  if (seen[0]) return -1;
+  for (let turns = 1; queue.length; turns++) {
+    let qlen = queue.length;
+    for (let i = 0; i < qlen; i++) {
+      let curr = queue.shift();
+      for (let j = 1; j < 10000; j *= 10) {
+        let mask = ~~((curr % (j * 10)) / j),
+          masked = curr - mask * j;
+
+        for (let k = 1; k < 10; k += 8) {
+          let next = masked + ((mask + k) % 10) * j;
+          console.log(`k ${k}`);
+          console.log(`next ${next}`);
+          console.log("");
+          if (seen[next]) continue;
+          if (next === target) return turns;
+          seen[next] = 1;
+          queue.push(next);
+          // console.log(`queue: ${queue}`);
+        }
+      }
     }
-    stack.push([start, heights[i]]);
+    // console.log(`turn: ${turns}`);
   }
-  return ans;
+  return -1;
 };
 
-console.log(largestRectangleArea([2, 0, 2, 1, 1]));
+console.log(openLock(["0201", "0101", "0102", "1212", "2002"], "0202"));

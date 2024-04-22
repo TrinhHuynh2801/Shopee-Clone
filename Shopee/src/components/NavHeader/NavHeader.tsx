@@ -5,6 +5,7 @@ import { purchasesStatus } from 'src/constants/purchaseStatus'
 import { AppContext } from 'src/contexts/app.context'
 import Popover from '../Popover'
 import { Link } from 'react-router-dom'
+import path from 'src/constants/path'
 
 export default function NavHeader() {
   const { setIsAuth, isAuth, profile, setProfile } = useContext(AppContext)
@@ -68,12 +69,15 @@ export default function NavHeader() {
           renderPopover={
             <div className='relative rounded-sm border border-gray-200 bg-white shadow-md'>
               <Link
-                to='/profile'
+                to={path.profile}
                 className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
               >
                 Tài khoản của tôi
               </Link>
-              <Link to='/' className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'>
+              <Link
+                to={path.home}
+                className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
+              >
                 Đơn mua
               </Link>
               <button
@@ -95,12 +99,12 @@ export default function NavHeader() {
       ) : (
         <div className='flex items-center  '>
           <div className='border-r-2 border-[hsla(0,0%,100%,.4)]'>
-            <Link to='/register' className='cursor-pointer p-2 hover:text-gray-200'>
+            <Link to={path.register} className='cursor-pointer p-2 hover:text-gray-200'>
               Đăng ký
             </Link>
           </div>
 
-          <Link to='/login' className='cursor-pointer p-2 hover:text-gray-200'>
+          <Link to={path.login} className='cursor-pointer p-2 hover:text-gray-200'>
             Đăng nhập
           </Link>
         </div>

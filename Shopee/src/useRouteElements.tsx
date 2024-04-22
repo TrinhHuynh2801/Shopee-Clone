@@ -10,6 +10,9 @@ import ProductList from './pages/ProductList'
 import ProductDetail from './pages/ProductDetail/ProductDetail'
 import Cart from './pages/Cart'
 import CartLayout from './layouts/CartLayout/CartLayout'
+import path from './constants/path'
+import UserLayout from './pages/User/layouts'
+import ChangePassword from './pages/User/pages/ChangePassword'
 
 const ProtectedRoute = () => {
   const { isAuth } = useContext(AppContext)
@@ -23,7 +26,7 @@ const RejectedRoute = () => {
 export default function useRouteElements() {
   const routeElements = useRoutes([
     {
-      path: '',
+      path: path.home,
       index: true,
       element: (
         <MainLayout>
@@ -32,7 +35,7 @@ export default function useRouteElements() {
       )
     },
     {
-      path: '/:nameId',
+      path: path.productDetail,
       index: true,
       element: (
         <MainLayout>
@@ -41,33 +44,43 @@ export default function useRouteElements() {
       )
     },
     {
-      path: '',
+      path: path.home,
       element: <ProtectedRoute />,
       children: [
         {
-          path: 'profile',
-          element: (
-            <MainLayout>
-              <Profile />
-            </MainLayout>
-          )
-        },
-        {
-          path: 'cart',
+          path: path.cart,
           element: (
             <CartLayout>
               <Cart />
             </CartLayout>
           )
+        },
+        {
+          path: path.user,
+          element: (
+            <MainLayout>
+              <UserLayout />
+            </MainLayout>
+          ),
+          children: [
+            {
+              path: path.profile,
+              element: <Profile />
+            },
+            {
+              path: path.changePassword,
+              element: <ChangePassword />
+            }
+          ]
         }
       ]
     },
     {
-      path: '',
+      path: path.home,
       element: <RejectedRoute />,
       children: [
         {
-          path: 'login',
+          path: path.login,
           element: (
             <RegisterLayout>
               <Login />
@@ -75,7 +88,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: 'register',
+          path: path.register,
           element: (
             <RegisterLayout>
               <Register />
