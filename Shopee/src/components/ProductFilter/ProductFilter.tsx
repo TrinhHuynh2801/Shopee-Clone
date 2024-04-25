@@ -54,7 +54,7 @@ export default function ProductFilter({ categories, queryConfig }: Props) {
   }
 
   return (
-    <div className='w-1/6 ml-3 mr-8'>
+    <div className='hidden sm:block sm:w-1/6 ml-3 mr-8'>
       <div className='mb-8'>
         <div className='flex items-center pb-2 border-b-2 border-b-slate-200 '>
           <svg viewBox='0 0 12 10' className='h-3 w-3 mr-2'>

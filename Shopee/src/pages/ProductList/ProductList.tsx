@@ -26,7 +26,7 @@ export default function ProductList() {
     <div className='flex bg-slate-50 border-b-4 pb-24 border-shopee mt-10'>
       {categoryData && <ProductFilter categories={categoryData.data.data} queryConfig={queryConfig} />}
       {productsData && (
-        <div className='w-5/6'>
+        <div className='w-full sm:w-5/6 '>
           <SortProduct queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} />
           <Products products={productsData.data.data.products} />
           <Pagination queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} />
