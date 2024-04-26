@@ -1,8 +1,9 @@
 import { InputHTMLAttributes } from 'react'
-import type { UseFormRegister, RegisterOptions } from 'react-hook-form'
+import type { UseFormRegister, RegisterOptions, FieldError, Merge, FieldErrorsImpl } from 'react-hook-form'
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
-  errorMessage?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  errorMessage?: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>>
   classNameInput?: string
   classNameError?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,7 +25,7 @@ export default function Input({
   return (
     <div className={className}>
       <input className={classNameInput} {...registerResult} {...rest} />
-      <div className={classNameError}>{errorMessage}</div>
+      <div className={classNameError}>{errorMessage?.toString()}</div>
     </div>
   )
 }

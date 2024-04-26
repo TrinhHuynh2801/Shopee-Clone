@@ -1,4 +1,6 @@
 import axios, { AxiosError } from 'axios'
+import config from 'src/constants/config'
+import userImage from 'src/assets/images/user.svg'
 
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
   // eslint-disable-next-line import/no-named-as-default-member
@@ -26,6 +28,8 @@ export const getIdFromNameId = (nameId: string) => {
   const arr = nameId.split('-i-')
   return arr[arr.length - 1]
 }
+export const getAvatarUrl = (avatarName?: string) => (avatarName ? `${config.baseUrl}images/${avatarName}` : userImage)
+
 export function formatNumberToK(number: number) {
   if (number >= 1000) {
     const dividedNumber = number / 1000

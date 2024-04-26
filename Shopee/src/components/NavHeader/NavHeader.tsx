@@ -6,6 +6,7 @@ import { AppContext } from 'src/contexts/app.context'
 import Popover from '../Popover'
 import { Link } from 'react-router-dom'
 import path from 'src/constants/path'
+import { getAvatarUrl } from 'src/utils/utils'
 
 export default function NavHeader() {
   const { setIsAuth, isAuth, profile, setProfile } = useContext(AppContext)
@@ -89,11 +90,7 @@ export default function NavHeader() {
             </div>
           }
         >
-          <img
-            src='https://down-vn.img.susercontent.com/file/61a786e44c4abfd340daebe703b18c36_tn'
-            alt=''
-            className='rounded-full object-contain w-6 h-6 '
-          />
+          <img src={getAvatarUrl(profile?.avatar)} alt='' className='rounded-full object-contain w-6 h-6 ' />
           <div className='mx-2'>{profile?.email}</div>
         </Popover>
       ) : (
