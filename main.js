@@ -1,16 +1,32 @@
-var longestIdealString = function (s, k) {
-  let max = 0;
-  const dp = new Array(128).fill(0);
-  for (let char of s) {
-    let ascii = char.charCodeAt(0);
-    let maxForChar = 0;
-    for (let i = Math.max(0, ascii - k); i <= Math.min(127, ascii + k); i++) {
-      maxForChar = Math.max(maxForChar, dp[i]);
+var minFallingPathSum = function (matrix) {
+  const m = matrix.length;
+  const n = matrix[0].length;
+  for (let i = 1; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (j == 0) {
+        matrix[i][j] =
+          Math.min(matrix[i - 1][j], matrix[i - 1][j + 1]) + matrix[i][j];
+      } else if (j == n - 1) {
+        matrix[i][j] =
+          Math.min(matrix[i - 1][j - 1], matrix[i - 1][j]) + matrix[i][j];
+      } else {
+        matrix[i][j] =
+          Math.min(
+            matrix[i - 1][j - 1],
+            matrix[i - 1][j],
+            matrix[i - 1][j + 1]
+          ) + matrix[i][j];
+      }
     }
-    dp[ascii] = maxForChar + 1;
-    max = Math.max(max, dp[ascii]);
   }
-  return max;
+
+  return Math.min(...matrix[m - 1]);
 };
 
-console.log(longestIdealString("pvjcci", 4));
+console.log(
+  minFallingPathSum([
+    [2, 1, 3],
+    [6, 5, 4],
+    [7, 8, 9],
+  ])
+);
