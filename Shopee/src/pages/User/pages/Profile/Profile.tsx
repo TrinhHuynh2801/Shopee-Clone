@@ -22,14 +22,13 @@ export default function Profile() {
   const updateProfileMutation = useMutation({
     mutationFn: userApi.updateProfile
   })
+  console.log(updateProfileMutation)
   const {
     register,
     control,
     formState: { errors },
     handleSubmit,
-    setValue,
-    watch,
-    setError
+    setValue
   } = useForm<FormData>({
     defaultValues: {
       name: '',
@@ -56,8 +55,6 @@ export default function Profile() {
     // await updateProfileMutation.mutateAsync({})
   })
 
-  const value = watch()
-
   return (
     <div className='rounded-sm bg-white px-2 pb-10 shadow md:px-7 md:pb-20'>
       <div className='border-b border-b-gray-200 py-6'>
@@ -75,18 +72,30 @@ export default function Profile() {
           <div className='mt-6 flex flex-col flex-wrap sm:flex-row'>
             <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Tên</div>
             <div className='sm:w-[80%] sm:pl-5'>
-              <Input classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm' />
-            </div>
-          </div>
-          <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
-            <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Số điện thoại</div>
-            <div className='sm:w-[80%] sm:pl-5'>
               <Input
                 classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
                 register={register}
                 name='name'
                 placeholder='Tên'
                 errorMessage={errors.name?.message}
+              />
+            </div>
+          </div>
+          <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
+            <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Số điện thoại</div>
+            <div className='sm:w-[80%] sm:pl-5'>
+              <Controller
+                control={control}
+                name='phone'
+                render={({ field }) => (
+                  <InputNumber
+                    classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
+                    placeholder='Số điện thoại'
+                    errorMessage={errors.phone?.message}
+                    {...field}
+                    onChange={field.onChange}
+                  />
+                )}
               />
             </div>
           </div>
@@ -118,7 +127,7 @@ export default function Profile() {
             <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right' />
             <div className='sm:w-[80%] sm:pl-5'>
               <Button
-                className='flex h-9 items-center bg-orange px-5 text-center text-sm text-white hover:bg-orange/80'
+                className='flex h-9 items-center bg-shopee px-5 text-center text-sm text-white hover:bg-shopee/80'
                 type='submit'
               >
                 Lưu
