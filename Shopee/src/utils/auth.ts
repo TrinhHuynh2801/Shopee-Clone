@@ -18,6 +18,6 @@ export const getProfileFromLS = () => {
   return result ? JSON.parse(result) : null
 }
 
-export const setProfile = (profile: User) => {
+export const setProfilefromLS = (profile: User) => {
   localStorage.setItem('profile', JSON.stringify(profile))
 }
