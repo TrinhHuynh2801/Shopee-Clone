@@ -2,6 +2,7 @@ import axios, { AxiosError, type AxiosInstance } from 'axios'
 import { toast } from 'react-toastify'
 import { AuthResponse } from 'src/types/auth.type'
 import { clearAccessToken, getAccessTokenFromLS, setAccessTokenToLS, setProfilefromLS } from './auth'
+import config from 'src/constants/config'
 
 class Http {
   instance: AxiosInstance
@@ -9,7 +10,7 @@ class Http {
   constructor() {
     this.accessToken = getAccessTokenFromLS()
     this.instance = axios.create({
-      baseURL: 'https://api-ecom.duthanhduoc.com/',
+      baseURL: config.baseUrl,
       timeout: 10000,
       headers: {
         'Content-Type': 'application/json'
@@ -45,7 +46,7 @@ class Http {
         if (error.response?.status !== 422) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const data: any | undefined = error.response?.data
-          const message = data.message || error.message
+          const message = data?.message || error.message
           toast.error(message)
         }
         if (error.response?.status === 401) {
