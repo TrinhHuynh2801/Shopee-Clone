@@ -121,7 +121,7 @@ export default function ProductDetail() {
       <div className='container'>
         <div className='bg-white p-4 shadow'>
           <div className='grid grid-cols-12 gap-9'>
-            <div className='col-span-5'>
+            <div className='col-span-12 sm:col-span-5'>
               <div
                 className='relative w-full cursor-zoom-in overflow-hidden pt-[100%] shadow'
                 onMouseMove={handleZoom}
@@ -180,7 +180,7 @@ export default function ProductDetail() {
                 </button>
               </div>
             </div>
-            <div className='col-span-7'>
+            <div className='sm:col-span-7 col-span-12'>
               <h1 className='text-xl font-medium uppercase'>{product.name}</h1>
               <div className='mt-8 flex items-center'>
                 <div className='flex items-center'>
@@ -197,7 +197,7 @@ export default function ProductDetail() {
                   <span className='ml-1 text-gray-500'>Đã bán</span>
                 </div>
               </div>
-              <div className='mt-8 flex items-center bg-gray-50 px-5 py-4'>
+              <div className='mt-8 flex items-center  bg-gray-50 px-5 py-4 '>
                 <div className='text-gray-500 line-through'>
                   ₫{formatNumberWithPeriods(product.price_before_discount)}
                 </div>
@@ -208,7 +208,7 @@ export default function ProductDetail() {
                   {rateSale(product.price_before_discount, product.price)} giảm
                 </div>
               </div>
-              <div className='mt-8 flex items-center'>
+              <div className='mt-8 flex items-center text-wrap'>
                 <div className='capitalize text-gray-500'>Số lượng</div>
                 <QuantityController
                   onDecrease={handleBuyCount}
@@ -217,7 +217,7 @@ export default function ProductDetail() {
                   value={buyCount}
                   max={product.quantity}
                 />
-                <div className='ml-6 text-sm text-gray-500'>
+                <div className='ml-6 text-sm text-gray-500 '>
                   {product.quantity} {'product:available'}
                 </div>
               </div>
