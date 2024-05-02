@@ -120,7 +120,7 @@ export default function ProductDetail() {
     <div className='bg-gray-200 py-6'>
       <div className='container'>
         <div className='bg-white p-4 shadow'>
-          <div className='grid grid-cols-12 gap-9'>
+          <div className='grid grid-cols-12 gap-1 sm:gap-9'>
             <div className='col-span-12 sm:col-span-5'>
               <div
                 className='relative w-full cursor-zoom-in overflow-hidden pt-[100%] shadow'
@@ -180,7 +180,7 @@ export default function ProductDetail() {
                 </button>
               </div>
             </div>
-            <div className='sm:col-span-7 col-span-12'>
+            <div className='sm:col-span-7 col-span-full'>
               <h1 className='text-xl font-medium uppercase'>{product.name}</h1>
               <div className='mt-8 flex items-center'>
                 <div className='flex items-center'>
@@ -197,18 +197,18 @@ export default function ProductDetail() {
                   <span className='ml-1 text-gray-500'>Đã bán</span>
                 </div>
               </div>
-              <div className='mt-8 flex items-center  bg-gray-50 px-5 py-4 '>
+              <div className='mt-8 flex items-center  bg-gray-50 px-5 py-4 flex-wrap'>
                 <div className='text-gray-500 line-through'>
                   ₫{formatNumberWithPeriods(product.price_before_discount)}
                 </div>
                 <div className='ml-3 text-3xl font-medium text-shopeeText'>
                   ₫{formatNumberWithPeriods(product.price)}
                 </div>
-                <div className='ml-4 rounded-sm bg-shopee px-1 py-[2px] text-xs font-semibold uppercase text-white'>
+                <div className='sm:ml-4 rounded-sm bg-shopee px-1 py-[2px] text-xs font-semibold uppercase text-white'>
                   {rateSale(product.price_before_discount, product.price)} giảm
                 </div>
               </div>
-              <div className='mt-8 flex items-center text-wrap'>
+              <div className='mt-8 flex items-center '>
                 <div className='capitalize text-gray-500'>Số lượng</div>
                 <QuantityController
                   onDecrease={handleBuyCount}
@@ -218,7 +218,7 @@ export default function ProductDetail() {
                   max={product.quantity}
                 />
                 <div className='ml-6 text-sm text-gray-500 '>
-                  {product.quantity} {'product:available'}
+                  {product.quantity} {'sản phẩm có sẵn'}
                 </div>
               </div>
               <div className='mt-8 flex items-center'>
@@ -263,7 +263,7 @@ export default function ProductDetail() {
         </div>
       </div>
       <div className='mt-8'>
-        <div className='container ml-auto mr-auto pl-4 pr-4'>
+        <div className='container'>
           <div className=' bg-white p-4 shadow'>
             <div className='rounded bg-gray-50 p-4 text-lg capitalize text-slate-700'>Mô tả sản phẩm</div>
             <div className='mx-4 mt-12 mb-4 text-sm leading-loose'>
