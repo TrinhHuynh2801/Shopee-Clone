@@ -253,7 +253,7 @@ export default function ProductDetail() {
                 </button>
                 <button
                   onClick={buyNow}
-                  className='fkex ml-4 h-12 min-w-[5rem] items-center justify-center rounded-sm bg-shopee px-5 capitalize text-white shadow-sm outline-none hover:bg-shopee/90'
+                  className='flex ml-4 h-12 min-w-[5rem] items-center justify-center rounded-sm bg-shopee px-5 capitalize text-white shadow-sm outline-none hover:bg-shopee/90'
                 >
                   Mua ngay
                 </button>
