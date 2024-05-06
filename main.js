@@ -1,14 +1,18 @@
-var numRescueBoats = function (people, limit) {
-  const sortPeople = people.sort((a, b) => a - b);
-  let left = 0,
-    right = people.length - 1,
-    boats = 0;
-  while (left <= right) {
-    if (sortPeople[left] + sortPeople[right] <= limit) left++;
-    right--;
-    boats++;
+var reversePrefix = function (word, ch) {
+  let findIndex = -1;
+  let rest = "";
+  let reverse = "";
+  for (let i = 0; i < word.length; i++)
+    if (word[i] == ch) {
+      findIndex = i;
+      break;
+    }
+  for (let i = findIndex; i >= 0; i--) {
+    reverse += word[i];
   }
-  return boats;
+  if (findIndex == -1) return word;
+  for (let i = findIndex + 1; i < word.length; i++) rest += word[i];
+  return reverse + rest;
 };
 
-console.log(numRescueBoats([1, 2, 2, 3], 5));
+console.log(reversePrefix("xyxzxe", "z"));
