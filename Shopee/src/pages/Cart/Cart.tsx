@@ -7,7 +7,7 @@ import purchaseApi from 'src/apis/purchase.api'
 import QuantityController from 'src/components/QuantityController'
 import { purchasesStatus } from 'src/constants/purchaseStatus'
 import { AppContext } from 'src/contexts/app.context'
-import { Purchase } from 'src/types/purchase'
+import { Purchase } from 'src/types/purchase.type'
 import { formatNumberWithPeriods, generateNameId } from 'src/utils/utils'
 import noproduct from 'src/assets/images/no-product.png'
 

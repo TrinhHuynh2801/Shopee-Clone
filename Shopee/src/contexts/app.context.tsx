@@ -1,7 +1,7 @@
 import { createContext, useState } from 'react'
 import { getAccessTokenFromLS, getProfileFromLS } from '../utils/auth'
 import { User } from 'src/types/user.type'
-import { ExtendedPurchase } from 'src/types/purchase'
+import { ExtendedPurchase } from 'src/types/purchase.type'
 
 interface AppContextInterface {
   isAuth: boolean
