@@ -17,8 +17,15 @@ export default function Register() {
     handleSubmit,
     getValues,
     setError,
+    reset,
     formState: { errors }
-  } = useForm<FormData>()
+  } = useForm<FormData>({
+    defaultValues: {
+      email: '',
+      password: '',
+      confirm_password: ''
+    }
+  })
   const registerMutation = useMutation({
     mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
   })
@@ -28,6 +35,7 @@ export default function Register() {
     registerMutation.mutate(body, {
       onSuccess: (data) => {
         toast.success(data.data.message)
+        reset()
       },
       onError: (error) => {
         if (isAxiosError422<ErrorResponse<Omit<FormData, 'confirm_password'>>>(error)) {
