@@ -10,6 +10,7 @@ export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
 export function isAxiosError422<FormError>(error: unknown): error is AxiosError<FormError> {
   return isAxiosError(error) && error.response?.status === 422
 }
+
 export const rateSale = (original: number, sale: number) => Math.round(((original - sale) / original) * 100) + '%'
 
 export function formatNumberWithPeriods(number: number) {

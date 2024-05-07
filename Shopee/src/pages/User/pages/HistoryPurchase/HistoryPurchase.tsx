@@ -1,3 +1,3 @@
 export default function HistoryPurchase() {
-  return <div />
+  return <div>HistoryPurchase</div>
 }
